@@ -1,0 +1,12 @@
+ID=00331555
+Product=PingDirectory
+Version=8.3
+EnforcementType=3
+Tier=Free
+IssueDate=2022-02-16
+ExpirationDate=2023-02-16
+DeploymentMethod=Docker
+Organization=Ping Identity Corporation
+Name=PingDirectory-8.3-Production
+SignCode=FF03
+Signature=302C021425A1A56591B08EF27FE7421891451556245397F50214373B69F40270ED12C51E931761F7EDF11F38A84A
