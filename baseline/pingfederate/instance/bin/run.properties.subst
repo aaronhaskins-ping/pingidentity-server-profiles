@@ -1,3 +1,4 @@
+pf.console.environment="aaron's devops test"
 pf.admin.https.port=${PF_ADMIN_PORT}
 pf.admin.hostname=${PF_ADMIN_PUBLIC_HOSTNAME}
 pf.admin.baseurl=${PF_ADMIN_PUBLIC_BASEURL}
