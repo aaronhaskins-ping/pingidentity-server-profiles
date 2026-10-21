@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+a user has failed multi-factor authentication.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-device-locked.html -->
+
+#set( $messageKeyPrefix = "pingone.mfa.locked.device." )
+
+#if($errorMessageKey)
+#set( $errorMessage = $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey))
+#end
+
+#if(!$notificationCoolDownExpiresAt)
+#set( $notificationCoolDownExpiresAt = 0 )
+#end
+
+#set( $canForgotDevice = ($backupAuthEnabled && !$displayOneTimeAndPairedDevices && $oneTimeDevices && $oneTimeDevices.size() > 0 && $devices && $devices.size() == 1) )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>
+        $languagePackMessages.getMessage($messageKeyPrefix, "title")
+    </title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
+    user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body onload="init()">
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <div class="org-logo"><img class="org-logo__image"
+                                               src="assets/images/ping-logo.svg"
+                                               alt="Company Logo"/></div>
+                    <div class="icon-feedback icon-feedback--timeout  icon-feedback--error">
+                        <span class="icon-feedback__icon pingicon-ghost-error"></span>
+                        <p class="icon-feedback__label">
+                            $languagePackMessages.getMessage($messageKeyPrefix, $headerKey)
+                        </p>
+                    </div>
+                    <div class="text-block branding-template-primary-text" data-id="error-message">
+                        <div class="text-block--overflow-wrap">
+                            #if($accountLockedOutErrorMessage)
+                            $accountLockedOutErrorMessage
+                            #elseif($errorMessageKey)
+                            <div id="errorMessageDisplay"></div>
+                            #end
+                        </div>
+                    </div>
+                    <div class="text-block" data-id="navigation">
+                        #if($isChangeDeviceButton == "true")
+                        <div>
+                            <button id="change-device"
+                                    class="button file-input--button branding-template-primary-button button--primary brand-primary-bg"
+                                    data-id="button" type="button"
+                                    onclick="unselectDevice()">
+                                $languagePackMessages.getMessage($messageKeyPrefix,
+                                "change.device.button")
+                            </button>
+                        </div>
+                        #else
+                        <div>
+                            <button id="back"
+                                    class="button file-input--button branding-template-primary-button button--primary brand-primary-bg"
+                                    data-id="button" type="button"
+                                    onclick="cancelDevicePairing()">
+                                $languagePackMessages.getMessage($messageKeyPrefix,
+                                "back.button")
+                            </button>
+                        </div>
+                        #end
+                        #if($canForgotDevice)
+                        <div>
+                            <a tabindex="0" id="forgot-device" data-id="content-link" target="_self" class="anchor"
+                                    onclick="forgotDevice()" style="margin-top: 10px; display: inline-block;">
+                                $languagePackMessages.getMessage($messageKeyPrefix, "forgot.device.button.title")
+                            </a>
+                        </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">
+                    $templateMessages.getMessage("global.footerMessage")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id='form' method="post" action="$resumePath" autocomplete="off">
+    <input type="hidden" name="selected.device.id" value="">
+    <input type="hidden" name="cancel.device.pairing" value="">
+    <input type="hidden" name="$escape.escape($forgotDevice)" value="">
+</form>
+<script type="text/javascript">
+    function init(){
+        // Get the current time and the cooldown period expiration time
+        const currentTime = new Date().getTime();
+        const notificationCoolDownExpiresAt = $notificationCoolDownExpiresAt;
+
+        // Calculate the remaining cooldown time
+        let remainingTime = notificationCoolDownExpiresAt - currentTime;
+
+        const errorMessageDisplayElement = document.getElementById("errorMessageDisplay");
+        let errorMessage = "";
+
+        if (remainingTime > 0) {
+            const updateCountdown = () => {
+                if (remainingTime > 0) {
+                    // Calculate remaining minutes and seconds
+                    const remainingMinutes = Math.ceil(remainingTime / 60000);
+                    const remainingSeconds = Math.ceil((remainingTime % 60000) / 1000);
+
+                    // Handle pluralization
+                    const minuteText = remainingMinutes === 1 ? "minute" : "minutes";
+                    const secondText = remainingSeconds === 1 ? "second" : "seconds";
+
+                    errorMessage = "$errorMessage";
+                    if (remainingMinutes > 1) {
+                        errorMessage = errorMessage.replace("{0}",remainingMinutes).replace("{1}",minuteText);
+                    } else if (remainingMinutes === 1) {
+                        errorMessage = errorMessage.replace("{0}",remainingSeconds).replace("{1}",secondText);
+                    }
+                    remainingTime -= 1000;
+                } else {
+                    errorMessage = "";
+                    const changeDeviceButton = document.getElementById("change-device");
+                    if(changeDeviceButton){
+                        changeDeviceButton.click();
+                    }
+                    clearInterval(countdownInterval);
+                }
+                if(errorMessageDisplayElement) {
+                    errorMessageDisplayElement.textContent = errorMessage;
+                }
+            };
+
+            // Start the countdown timer
+            const countdownInterval = setInterval(updateCountdown, 1000);
+
+            // Initial display
+            updateCountdown();
+        } else {
+            errorMessage = "$errorMessage";
+            if(errorMessageDisplayElement) {
+                errorMessageDisplayElement.textContent = errorMessage;
+            }
+        }
+    }
+
+    function unselectDevice() {
+        document.forms[0]['selected.device.id'].value = '';
+        submit('selected.device.id');
+    }
+
+    function cancelDevicePairing() {
+        document.forms[0]['cancel.device.pairing'].value = 'true';
+        submit('cancel.device.pairing');
+    }
+
+    function forgotDevice() {
+        document.forms[0]['$forgotDevice'].value = 'true';
+        submit('$forgotDevice');
+    }
+
+    function submit(inputName) {
+        // Prevent unused inputs from being submitted
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.name !== inputName) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser
+for offline authentication.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-offline-auth-login.html -->
+
+#set( $messageKeyPrefix = "pingid.oa." )
+
+#set($otpError = false)
+#set($resetError = false)
+#if($errorCode && $errorCode.length() > 0)
+    #if($errorCode == "INVALID_OTP")
+        #set($otpError = true)
+    #elseif($errorCode == "RESET")
+        #set($resetError = true)
+    #end
+#end
+
+#set($qrCode = $devices.get(0).qrCode)
+#set($encryptedOtp = $devices.get(0).encryptedOtp)
+#set($selectedDeviceName = $devices.get(0).displayName)
+
+#if($selectedDeviceDisplayName)
+    #foreach($device in $devices)
+        #if($device.displayName == $selectedDeviceDisplayName)
+            #set($qrCode = $device.qrCode)
+            #set($encryptedOtp = $device.encryptedOtp)
+            #set($selectedDeviceName = $device.displayName)
+        #end
+    #end
+#end
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+        .page__content {
+            margin-top: 50px;
+        }
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+        .offline-qr-code {
+            display: flex;
+            justify-content: center;
+            margin: 16px 0;
+        }
+        .offline-qr-code img {
+            width: 200px;
+            height: 200px;
+        }
+        .offline-device-label {
+            text-align: center;
+            color: #3d454d;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        .offline-device-change {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .offline-panel {
+            display: none;
+        }
+        .offline-panel--active {
+            display: block;
+        }
+    </style>
+</head>
+<body onload="initPanels()">
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <form id="auth-form" class="form" data-id="form" action="$resumePath" method="post" autocomplete="off">
+
+                        <div class="org-logo">
+                            <img class="org-logo__image" src="assets/images/ping-logo.svg" alt="Company Logo"/>
+                        </div>
+
+                        #if($resetError)
+                        <!-- Locked screen: submit with empty OTP and no selectedDevice → server re-renders at device selection -->
+                        <input type="hidden" name="selectedDeviceDisplayName" value=""/>
+                        <div class="stack" data-id="stack" style="text-align: center; padding: 16px 0;">
+                            <div class="icon-feedback icon-feedback--timeout icon-feedback--error">
+                                <span class="icon-feedback__icon pingicon-ghost-error"></span>
+                            </div>
+                            <h1 class="heading-text centered-text" data-id="heading">
+                                $languagePackMessages.getMessage($messageKeyPrefix, "locked.heading")
+                            </h1>
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap" style="text-align: center;">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "error.too.many.attempts")
+                                </div>
+                            </div>
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    <div class="stack" data-id="stack">
+                                        #if($devices.size() > 1)
+                                        <div>
+                                            <button class="button file-input--button button--primary brand-primary-bg"
+                                                    data-id="button" type="submit">
+                                                $languagePackMessages.getMessage($messageKeyPrefix, "button.change.method")
+                                            </button>
+                                        </div>
+                                        #end
+                                        <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                           href="$resumePath?cancel.offline.auth=1">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "button.cancel")
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        #end
+
+                        #if(!$resetError)
+
+                        #if($devices.size() > 1)
+
+                        <!-- Panel 1: Device selection (shown first when multiple devices and no prior selection) -->
+                        <div id="panel-device-selection" class="offline-panel">
+                            <div class="stack stack--small" data-id="stack">
+                                <h1 class="heading-text centered-text" data-id="heading">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "heading")
+                                </h1>
+                                <div class="text-block" data-id="textblock">
+                                    <div class="text-block--overflow-wrap" style="text-align: center;">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "select.intro")
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stack stack--small" data-id="stack" style="margin-top: 16px;">
+                                <div class="tile-selector tile-selector--stacked">
+                                    #foreach($device in $devices)
+                                    <div class="tile-button--side-icon tile-button tile-button--stacked-small"
+                                         data-id="tile-selector-button"
+                                         data-display-name="$device.displayName"
+                                         data-qr-code="$device.qrCode"
+                                         data-encrypted-otp="$device.encryptedOtp"
+                                         tabindex="0" role="button">
+                                        <div style="display: flex; width: 100%; align-items: center; pointer-events: none;">
+                                            <div class="tile-button__icon-container">
+                                                <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                                    <path d="M16,18H7V4H16M11.5,22A1.5,1.5 0 0,1 10,20.5A1.5,1.5 0 0,1 11.5,19A1.5,1.5 0 0,1 13,20.5A1.5,1.5 0 0,1 11.5,22M15.5,1H7.5A2.5,2.5 0 0,0 5,3.5V20.5A2.5,2.5 0 0,0 7.5,23H15.5A2.5,2.5 0 0,0 18,20.5V3.5A2.5,2.5 0 0,0 15.5,1Z" style="fill: rgb(61, 69, 77);"/>
+                                                </svg>
+                                            </div>
+                                            <div class="tile-button__content-container">
+                                                <div class="tile-button__title">$languagePackMessages.getMessage($messageKeyPrefix, "device.type")</div>
+                                                <div class="tile-button__content">$device.displayName</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    #end
+                                </div>
+                            </div>
+                            <div class="text-block" data-id="textblock" style="margin-top: 16px;">
+                                <div class="text-block--overflow-wrap">
+                                    <div class="stack" data-id="stack">
+                                        <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                           href="$resumePath?cancel.offline.auth=1">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "button.cancel")
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        #end
+
+                        <!-- Panel 2: QR code and OTP entry -->
+                        <div id="panel-qr" class="offline-panel">
+                            <div class="stack stack--small" data-id="stack">
+                                <h1 class="heading-text centered-text" data-id="heading">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "heading")
+                                </h1>
+                                <div class="text-block" data-id="textblock">
+                                    <div class="text-block--overflow-wrap" style="text-align: center;">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "qr.intro")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- QR code -->
+                            <div class="offline-qr-code">
+                                <img id="qrcode-img" src="$qrCode" alt="qr-code"/>
+                            </div>
+
+                            <!-- Device label -->
+                            <div class="offline-device-label">
+                                <div>$languagePackMessages.getMessage($messageKeyPrefix, "authenticating.on")</div>
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                    <div class="device-name" id="selected-device-name">$selectedDeviceName</div>
+                                    #if($devices.size() > 1)
+                                    <a class="anchor" tabindex="0" onclick="showDeviceSelection()" style="font-size: 0.875em; white-space: nowrap;">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "button.change.method")
+                                    </a>
+                                    #end
+                                </div>
+                            </div>
+
+                            <!-- OTP input -->
+                            <div class="stack stack--small" style="margin-top: 16px;">
+                            #if($otpError)
+                            <div class="feedback feedback--error" data-id="feedback">
+                                <span class="feedback__icon pingicon-error-triangle"></span>
+                                <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix, "error.bad.code")</div>
+                            </div>
+                            #end
+                                <div class="text-input__icon"></div>
+                                <input id="offline-otp" type="text" class="text-input text-input--primary input--otp"
+                                       data-id="text-input"
+                                       name="offline.otp"
+                                       value="" autocomplete="off" maxlength="6"
+                                       oninput="checkInput()" onkeypress="return checkOtpOnReturn(event)"/>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="text-block" data-id="textblock" style="margin-top: 16px;">
+                                <div class="text-block--overflow-wrap">
+                                    <div class="stack" data-id="stack">
+                                        <div>
+                                            <button id="sign-on"
+                                                    class="button file-input--button button--primary brand-primary-bg button--disabled"
+                                                    data-id="button" type="submit" disabled>
+                                                $languagePackMessages.getMessage($messageKeyPrefix, "button.sso")
+                                            </button>
+                                        </div>
+                                        <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                           href="$resumePath?cancel.offline.auth=1">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "button.cancel")
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="selected-device-hidden" name="selectedDeviceDisplayName" value="$escape.escape($selectedDeviceName)"/>
+                        #end
+
+                    </form>
+
+                    #if($adminMessage && $adminMessage.length() > 0)
+                    <div class="text-block text-block--small" data-id="admin-message"
+                         style="margin-top: 15px; text-align: center; color: #6b7280; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <path d="M13.5417 9.37501H11.4583V7.29168H13.5417V9.37501ZM13.5417 17.7083H11.4583V11.4583H13.5417V17.7083ZM12.5 2.08334C11.1321 2.08334 9.77753 2.35278 8.51372 2.87627C7.24992 3.39975 6.10159 4.16704 5.13431 5.13431C3.18081 7.08782 2.08334 9.73734 2.08334 12.5C2.08334 15.2627 3.18081 17.9122 5.13431 19.8657C6.10159 20.833 7.24992 21.6003 8.51372 22.1238C9.77753 22.6472 11.1321 22.9167 12.5 22.9167C15.2627 22.9167 17.9122 21.8192 19.8657 19.8657C21.8192 17.9122 22.9167 15.2627 22.9167 12.5C22.9167 11.1321 22.6472 9.77753 22.1238 8.51372C21.6003 7.24992 20.833 6.10159 19.8657 5.13431C18.8984 4.16704 17.7501 3.39975 16.4863 2.87627C15.2225 2.35278 13.8679 2.08334 12.5 2.08334Z" fill="#303F5F"/>
+                        </svg>
+                        <span>$adminMessage</span>
+                    </div>
+                    #end
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var hasMultipleDevices = $devices.size() > 1;
+
+    function initPanels() {
+        if (hasMultipleDevices) {
+            // If server already has a selected device (e.g. OTP error after selection), go straight to QR panel
+            var serverSelected = "$!selectedDeviceDisplayName";
+            if (serverSelected && serverSelected.length > 0) {
+                showQrPanel();
+            } else {
+                showDeviceSelection();
+            }
+        } else {
+            showQrPanel();
+        }
+        // Focus OTP input if QR panel is visible and not on iPhone
+        var platform = navigator.platform;
+        if (platform != null && platform.indexOf("iPhone") === -1) {
+            var otpInput = document.getElementById("offline-otp");
+            if (otpInput && document.getElementById("panel-qr").classList.contains("offline-panel--active")) {
+                otpInput.focus();
+            }
+        }
+    }
+
+    function showDeviceSelection() {
+        setActivePanel("panel-device-selection");
+    }
+
+    function showQrPanel() {
+        setActivePanel("panel-qr");
+        var platform = navigator.platform;
+        if (platform != null && platform.indexOf("iPhone") === -1) {
+            var otpInput = document.getElementById("offline-otp");
+            if (otpInput) { otpInput.focus(); }
+        }
+    }
+
+    function setActivePanel(id) {
+        var panels = document.querySelectorAll(".offline-panel");
+        panels.forEach(function(p) { p.classList.remove("offline-panel--active"); });
+        var target = document.getElementById(id);
+        if (target) { target.classList.add("offline-panel--active"); }
+    }
+
+    // Wire device tile clicks via delegated listener to avoid inline JS string-escaping issues with base64 QR data
+    document.addEventListener("DOMContentLoaded", function() {
+        var selector = document.getElementById("panel-device-selection");
+        if (!selector) return;
+        selector.addEventListener("click", function(e) {
+            var tile = e.target.closest("[data-display-name]");
+            if (!tile) return;
+            var displayName = tile.getAttribute("data-display-name");
+            var qrCode = tile.getAttribute("data-qr-code");
+            document.getElementById("qrcode-img").src = qrCode;
+            document.getElementById("selected-device-hidden").value = displayName;
+            var nameEl = document.getElementById("selected-device-name");
+            if (nameEl) { nameEl.textContent = displayName; }
+            showQrPanel();
+        });
+    });
+
+    function checkInput() {
+        var value = document.getElementById("offline-otp").value;
+        var button = document.getElementById("sign-on");
+        if (!button) return;
+        var valid = /^\d{6}$/.test(value);
+        button.disabled = !valid;
+        if (valid) {
+            button.className = "button file-input--button button--primary brand-primary-bg";
+        } else {
+            button.className = "button file-input--button button--primary brand-primary-bg button--disabled";
+        }
+    }
+
+    function checkOtpOnReturn(e) {
+        var keycode = window.event ? window.event.keyCode : (e ? e.which : 0);
+        if (keycode === 13) {
+            if (/^\d{6}$/.test(document.getElementById("offline-otp").value)) {
+                document.getElementById("auth-form").submit();
+            }
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

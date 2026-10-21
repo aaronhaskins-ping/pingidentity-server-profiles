@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+a user has initiated multi-factor authentication for PingID Desktop Gen2 device.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-pingid-desktop-gen2-assertion-required.html -->
+
+#set( $messageKeyPrefix = "pingone.mfa.pingid.desktop.gen2.auth." )
+#set( $canChangeDevice = ($allowChangeDevice == true && $devices && ($devices.size() > 1 || ($devices.size() == 1 && $manualPairing == true))) )
+#set( $canForgotDevice = ($backupAuthEnabled && !$displayOneTimeAndPairedDevices && $oneTimeDevices && $oneTimeDevices.size() > 0 && $devices && $devices.size() == 1) )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <div class="org-logo"><img class="org-logo__image"
+                                               src="assets/images/ping-logo.svg"
+                                               alt="Company Logo"/></div>
+
+                    <div>
+                        <div class="ping-body-container" style="min-height: auto;">
+                            <div class="spinner spinner--margin-bottom-small">
+                                <div class="spinner__icon" data-id="spinner"></div>
+                            </div>
+                        </div>
+                        <div class="icon-feedback icon-feedback--success" style="margin-bottom: 10px;">
+                            <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
+                        </div>
+                        <div class="form-aside">
+                            <p class="text-block text-block--small" style="margin-bottom: 5px;">
+                                <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "request.sent.title")</span>
+                            </p>
+                            <p class="text-block">
+                                <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "method", $selectedDevice.name)</span>
+                            </p>
+                        </div>
+                    </div>
+                    #if($canForgotDevice)
+                        <div class="text-block" data-id="textblock">
+                            <div class="text-block--overflow-wrap">
+                                <div class="stack" data-id="stack">
+                                    <div>
+                                        <a tabindex="0" id="forgot-device" data-id="content-link" target="_self" class="anchor"
+                                           onclick="forgotDevice()" style="margin-top: 10px; display: inline-block;">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "forgot.device.button.title")
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    #end
+                    #if($canChangeDevice)
+                        <div class="text-block" data-id="textblock">
+                            <div class="text-block--overflow-wrap">
+                                <a tabindex="0" data-id="change-method-link" class="anchor" onclick="unselectDevice()">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "change.device.button.title")
+                                </a>
+                            </div>
+                        </div>
+                    #end
+                    #if($adminMessage && $adminMessage != "")
+                    <div class="text-block text-block--small" data-id="admin-message" style="margin-top: 15px; text-align: center; color: #6b7280; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <path d="M13.5417 9.37501H11.4583V7.29168H13.5417V9.37501ZM13.5417 17.7083H11.4583V11.4583H13.5417V17.7083ZM12.5 2.08334C11.1321 2.08334 9.77753 2.35278 8.51372 2.87627C7.24992 3.39975 6.10159 4.16704 5.13431 5.13431C3.18081 7.08782 2.08334 9.73734 2.08334 12.5C2.08334 15.2627 3.18081 17.9122 5.13431 19.8657C6.10159 20.833 7.24992 21.6003 8.51372 22.1238C9.77753 22.6472 11.1321 22.9167 12.5 22.9167C15.2627 22.9167 17.9122 21.8192 19.8657 19.8657C21.8192 17.9122 22.9167 15.2627 22.9167 12.5C22.9167 11.1321 22.6472 9.77753 22.1238 8.51372C21.6003 7.24992 20.833 6.10159 19.8657 5.13431C18.8984 4.16704 17.7501 3.39975 16.4863 2.87627C15.2225 2.35278 13.8679 2.08334 12.5 2.08334Z" fill="#303F5F"/>
+                        </svg>
+                        <span>$adminMessage</span>
+                    </div>
+                    #end
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="form" class="form" data-id="form" method="post" action="$resumePath" autocomplete="off">
+    <input type="hidden" name="$escape.escape($pingIdDesktopGen2Assertion)" value=""/>
+    <input type="hidden" name="$escape.escape($cancelAuthentication)" value=""/>
+    <input type="hidden" name="$escape.escape($selectedDeviceId)" value=""/>
+    <input type="hidden" name="$escape.escape($deviceAuthErrorMessage)" value=""/>
+</form>
+
+<script type="text/javascript">
+
+    var errorMessages = {
+        'limitExeeded': '$languagePackMessages.getMessage($messageKeyPrefix, "error.limit.exceeded")',
+        'lockedOut': '$languagePackMessages.getMessage($messageKeyPrefix, "error.locked.out")',
+        'userNotRegisteredForRelyingParty': '$languagePackMessages.getMessage($messageKeyPrefix, "error.user.not.registered")',
+        'recordNotFound': '$languagePackMessages.getMessage($messageKeyPrefix, "error.record.not.found")',
+        'touchIdIsNotAvailableInClosedClamshellMode': '$languagePackMessages.getMessage($messageKeyPrefix, "error.not.available.in.closed.clamshell")',
+        'canceledByUser': '$languagePackMessages.getMessage($messageKeyPrefix, "error.canceled.by.user")',
+        'notEnrolled': '$languagePackMessages.getMessage($messageKeyPrefix, "error.not.enrolled")',
+        'canceledByTimeout': '$languagePackMessages.getMessage($messageKeyPrefix, "error.canceled.by.timeout")',
+        'originNotAllowed': '$languagePackMessages.getMessage($messageKeyPrefix, "error.origin.not.allowed")',
+        'default': '$languagePackMessages.getMessage($messageKeyPrefix, "error.default")'
+    };
+
+    function isSafari() {
+        var userAgent = navigator.userAgent;
+        var isSafariBrowser = /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(userAgent);
+        if (navigator.userAgentData) {
+            var platform = navigator.userAgentData.platform || '';
+            return isSafariBrowser && platform.toLowerCase().indexOf('mac') !== -1;
+        }
+        return isSafariBrowser && /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent);
+    }
+
+    function getSSOExtensionUrl() {
+        return 'https://' + window.location.hostname + '/pingid/desktop';
+    }
+
+    function getSSOExtensionQueryParams() {
+        if (window.location.hash && window.location.hash.indexOf('#pingid_sso_callback') === 0) {
+            var hash = window.location.hash;
+            var qIndex = hash.indexOf('?');
+            if (qIndex !== -1) {
+                var paramsString = hash.substring(qIndex + 1).replace(/\?/g, '&');
+                var hashParams = new URLSearchParams(paramsString);
+
+                var error = hashParams.get('error');
+                if (error) {
+                    console.error('SSO Extension returned error:', error);
+                    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+                    return { authToken: null, error: error };
+                }
+
+                var authToken = hashParams.get('auth_token');
+                if (authToken) {
+                    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+                    return { authToken: authToken };
+                }
+            }
+        }
+
+        // Fallback to query params
+        var queryParams = new URLSearchParams(window.location.search);
+        var authToken = queryParams.get('auth_token');
+        if (authToken) {
+            var url = new URL(window.location.href);
+            url.searchParams.delete('auth_token');
+            window.history.replaceState({}, document.title, url.toString());
+            return { authToken: authToken };
+        }
+
+        return { authToken: null };
+    }
+
+    function authenticateViaSSOExtension(credentialRequestOptions) {
+        console.debug('Initiating SSO Extension authentication flow');
+        var baseUrl = getSSOExtensionUrl() + '/authenticate';
+        var url = new URL(baseUrl);
+        var redirectUri = new URL(window.location.href);
+
+        // Clean up current URL
+        redirectUri.searchParams.delete('auth_token');
+        redirectUri.hash = '';
+
+        // Set hash for callback
+        redirectUri.hash = 'pingid_sso_callback';
+
+        // Prepare the URL with parameters
+        url.searchParams.set('redirect_uri', redirectUri.toString());
+        url.searchParams.set('request', credentialRequestOptions);
+
+        // Top-level navigation so the Redirect-type SSO extension will run
+        window.top.location.assign(url.toString());
+    }
+
+    function handleAssertionResponse(response) {
+        if (response) {
+            document.forms[0]['$pingIdDesktopGen2Assertion'].value = response;
+            submit('$pingIdDesktopGen2Assertion');
+        }
+    }
+
+    function authenticate() {
+        var port = '$pingIdDesktopServicePort';
+        var credentialRequestOptions = '$pingIdDesktopCredentialRequestOptions';
+
+        if (isSafari()) {
+            authenticateViaSSOExtension(credentialRequestOptions);
+            return;
+        }
+
+        if (port && credentialRequestOptions) {
+            var url = 'http://127.0.0.1:' + port + '/authenticate';
+
+            jQuery.ajax({
+                url: url,
+                type: 'POST',
+                data: credentialRequestOptions,
+                headers: {
+                    'Content-Type': 'application/jwt'
+                },
+                success: function (response) {
+                    handleAssertionResponse(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('PingId Desktop authenticate call failed:', status, error);
+                    var errorCode = 'default';
+                    try {
+                        var responseBody = xhr.responseText;
+                        if (responseBody && errorMessages[responseBody]) {
+                            errorCode = responseBody;
+                        }
+                    } catch (e) {
+                        console.error('Failed to parse error response:', e);
+                    }
+                    goBackToDeviceSelectionWithError(errorMessages[errorCode] || errorMessages['default']);
+                }
+            });
+        }
+    }
+
+    function unselectDevice() {
+        submit('$selectedDeviceId');
+    }
+
+    function goBackToDeviceSelectionWithError(errorMessage) {
+        document.forms[0]['$deviceAuthErrorMessage'].value = errorMessage;
+        // Retain both selectedDeviceId and deviceAuthErrorMessage, remove all others
+        var inputs = document.forms[0].getElementsByTagName("input");
+        var retainNames = ['$selectedDeviceId', '$deviceAuthErrorMessage'];
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (retainNames.indexOf(input.name) === -1) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+
+    function cancelAuthentication() {
+        document.forms[0]['$cancelAuthentication'].value = 'true';
+        submit('$cancelAuthentication');
+    }
+
+
+    // SSO Extension callback handler — called immediately and on hash changes
+    function checkSSOCallback() {
+        if (isSafari()) {
+            var result = getSSOExtensionQueryParams();
+
+            if (result.error) {
+                var errorCode = errorMessages[result.error] ? result.error : 'default';
+                goBackToDeviceSelectionWithError(errorMessages[errorCode] || errorMessages['default']);
+                return true;
+            }
+
+            if (result.authToken) {
+                handleAssertionResponse(result.authToken);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Check immediately in case of page reload after SSO redirect
+    checkSSOCallback();
+    // Listen for hash changes in case browser treats redirect as fragment navigation
+    window.addEventListener('hashchange', checkSSOCallback);
+
+    window.onload = function () {
+        // If SSO callback was already handled, don't auto-authenticate again
+        if (!checkSSOCallback()) {
+            authenticate();
+        }
+    };
+
+    function submit(inputName) {
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.name !== inputName) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+
+
+</script>
+
+</body>
+</html>

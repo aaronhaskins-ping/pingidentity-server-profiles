@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+PingID Desktop Legacy activation is required.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-pingid-desktop-legacy-activation.html -->
+
+#set( $messageKeyPrefix = "pingone.mfa.pingid.desktop.legacy.activation." )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
+    user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+
+        .pingid-desktop-downloads {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .pingid-desktop-downloads a {
+            text-decoration: none;
+            transition: transform 0.2s ease;
+            font-size: 13px;
+            color: rgb(61, 69, 77);
+        }
+
+        .pingid-desktop-downloads a:hover {
+            transform: scale(1.05);
+            color: #2996cc;
+        }
+
+        .pingid-desktop-downloads a img {
+            display: block;
+        }
+
+        .pairing-key-display {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+            color: #495057;
+            word-break: break-all;
+        }
+
+        .instruction-text {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .download-instruction {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <form id="form" class="form" data-id="form" method="post" action="$resumePath" autocomplete="off">
+                        <input type="hidden" name="$escape.escape($pollAuthenticationStatus)" value="">
+                        <div class="org-logo"><img class="org-logo__image"
+                                                   src="assets/images/ping-logo.svg"
+                                                   alt="Company Logo"/></div>
+                        <div class="stack stack--small" data-id="stack">
+                            <h1 class="heading-text centered-text icon-heading" data-id="heading">
+                                <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                    <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" style="fill: rgb(61, 69, 77);"></path>
+                                </svg><span style="margin-left: .5em">$languagePackMessages.getMessage($messageKeyPrefix, "header")</span>
+                            </h1>
+                            <div class="text-block instruction-text" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "message")
+                                </div>
+                            </div>
+                            <div class="text-block" data-id="textblock" style="margin-top: 25px">
+                                <div class="text-block--overflow-wrap instruction-text">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "pairing.key")
+                                    <b>$pingIdDesktopPairingKey</b>
+                                </div>
+                            </div>
+                            <div class="pingid-desktop-downloads">
+                                <a href="https://pingone-downloads.s3.amazonaws.com/pingid/pc-client/PingID.exe" target="_blank">
+                                    <img src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='131' height='54' viewBox='0 0 131 54' fill='none'%3e %3cmask id='mask0_288_374' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='131' height='50'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.5 0.299988H130.102V49.9699H0.5V0.299988Z' fill='white'/%3e %3c/mask%3e %3cg mask='url(%23mask0_288_374)'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M125.117 0.299988H5.4907C2.736 0.299988 0.5 2.53599 0.5 5.28549V44.9901C0.5 47.7422 2.736 49.9704 5.4907 49.9704H125.118C127.874 49.9704 130.102 47.7422 130.102 44.9901H130.101V5.28549C130.101 2.53599 127.874 0.299988 125.117 0.299988ZM125.117 1.59999C127.147 1.59999 128.801 3.25359 128.801 5.28549L128.802 44.9901C128.802 47.0194 127.149 48.6704 125.118 48.6704H5.4907C3.4562 48.6704 1.8 47.0194 1.8 44.9901V5.28549C1.8 3.25359 3.4562 1.59999 5.4907 1.59999H125.117Z' fill='%233D454D'/%3e %3c/g%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M52.7501 25.8504H54.4193C55.7219 25.8504 56.1119 25.6879 56.5435 25.0288C56.8204 24.592 56.9335 24.1357 56.9335 23.3778C56.9335 21.8945 56.134 21.004 54.7833 21.004H52.7501V25.8504ZM53.7329 18.4196C56.4317 18.4196 57.2533 18.6952 58.1451 19.1983C59.631 20.0199 60.4292 21.4837 60.4292 23.3141C60.4292 25.4162 59.423 27.1062 57.6862 27.9304C56.9556 28.2697 56.2692 28.453 54.5103 28.453H52.7501V34.3056H49.5508V18.4196H53.7329Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M64.5665 22.3262V34.3057H61.5076V22.8098L64.5665 22.3262ZM64.9344 19.3804C64.9344 20.4321 64.0881 21.2771 63.0364 21.2771C62.0081 21.2771 61.1631 20.4321 61.1631 19.3804C61.1631 18.3287 62.0302 17.4824 63.0806 17.4824C64.1089 17.4824 64.9344 18.3287 64.9344 19.3804Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M68.703 22.3066C68.9786 22.7863 69.1359 23.2881 69.1359 23.7678C69.5961 23.448 69.9835 23.1737 70.4892 22.8994C71.1041 22.5822 71.9036 22.4015 72.59 22.4015C73.8939 22.4015 75.0366 23.0827 75.4006 24.0902C75.5618 24.5231 75.6294 25.0288 75.6294 25.7568V34.3056H72.6134V26.6941C72.6134 25.3707 72.3846 24.982 71.5825 24.982C70.9676 24.982 70.1681 25.3928 69.4596 26.0311V34.3056H66.3955V25.827C66.3955 24.8208 66.259 23.8588 65.9834 23.0827L68.703 22.3066Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M79.88 26.3753C79.88 27.5635 80.6132 28.0406 81.6883 28.0406C82.8973 28.0406 83.5616 27.4491 83.5616 26.3753C83.5616 25.2794 82.8765 24.6372 81.7078 24.6372C80.5456 24.6372 79.88 25.2794 79.88 26.3753ZM88.9787 23.8832C88.3144 24.5007 87.6761 24.7516 86.8298 24.7516C86.5334 24.7516 86.2123 24.7061 86.0303 24.6853C86.4879 25.2313 86.7167 25.8267 86.7167 26.6028C86.7167 28.6113 84.8876 30.0777 82.3968 30.0777C82.259 30.0777 82.1667 30.0777 81.9379 30.053C81.1631 30.4222 80.7276 30.6952 80.7276 31.0124C80.7276 31.1736 80.9109 31.2906 81.2294 31.2906L82.8765 31.3114C84.6575 31.3335 85.5961 31.6078 86.419 32.3618C87.1015 33.0053 87.4252 33.8022 87.4252 34.8552C87.4252 35.838 87.1275 36.5894 86.4879 37.2758C85.4583 38.3756 83.6968 38.7851 81.8677 38.7851C80.2024 38.7851 78.4877 38.5134 77.436 37.5293C76.7951 36.9313 76.4766 36.2475 76.4766 35.4467C76.4766 34.8097 76.6352 34.4886 76.7496 34.2598H79.5836C79.4692 34.5354 79.4458 34.6953 79.4458 35.0151C79.4458 35.9511 80.2245 36.4516 81.6415 36.4516C82.4176 36.4516 83.0806 36.3645 83.5616 36.0668C84.0179 35.7899 84.3169 35.3583 84.3169 34.8786C84.3169 33.8243 83.377 33.5058 82.1667 33.485L80.8641 33.4577C79.4939 33.4369 78.6034 33.3225 78.0522 33.095C77.5023 32.887 77.1604 32.3618 77.1604 31.5662C77.1604 30.8083 77.3892 30.0985 79.3106 29.598C77.618 29.1638 76.7951 28.09 76.7951 26.3493C76.7951 23.9521 78.7399 22.4012 81.7325 22.4012C82.3968 22.4012 82.9909 22.4909 83.8359 22.6924C84.4742 22.8536 84.8876 22.9472 85.275 22.9472C86.12 22.9472 86.9884 22.5819 87.6995 21.9397L88.9787 23.8832Z' fill='%23253747'/%3e %3cmask id='mask1_288_374' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='4' width='131' height='50'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.5 53.6704H130.102V4H0.5V53.6704Z' fill='white'/%3e %3c/mask%3e %3cg mask='url(%23mask1_288_374)'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M89.7568 36.8653H113.747V12.8738H89.7568V36.8653Z' fill='%23BB202B'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M92.7559 25.3122H95.9864V22.1714H92.7559V25.3122Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M92.7544 34.1652H95.9849V26.9424H92.7544V34.1652Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M100.951 31.8635H101.656C102.584 31.8635 103.28 31.5476 103.744 30.9171C104.208 30.2879 104.441 29.3883 104.441 28.2196C104.441 27.4526 104.353 26.8273 104.182 26.3463C104.012 25.8653 103.779 25.4935 103.486 25.2296C103.195 24.9657 102.851 24.7863 102.455 24.6888C102.06 24.5913 101.644 24.5419 101.209 24.5419H100.951V31.8635ZM97.7222 22.1707H102.344C103.225 22.1707 104.008 22.3111 104.689 22.5919C105.37 22.8727 105.946 23.2744 106.415 23.7944C106.885 24.317 107.241 24.941 107.481 25.6677C107.722 26.3957 107.843 27.2056 107.843 28.0987C107.843 29.1426 107.707 30.0448 107.438 30.8066C107.169 31.5671 106.779 32.1976 106.271 32.6968C105.76 33.1934 105.133 33.5639 104.389 33.8044C103.644 34.0449 102.796 34.1658 101.844 34.1658H97.7222V22.1707Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M116.125 35.9247H116.119L115.741 36.8646H115.664L115.285 35.9247H115.281V36.8646H115.154V35.8077H115.373L115.709 36.6553L116.034 35.8077H116.252V36.8646H116.125V35.9247ZM114.497 35.9247H114.154V35.8077H114.966V35.9247H114.623V36.8646H114.497V35.9247Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M35.5182 12.4476V24.6026C30.8655 24.6026 26.1179 24.6975 21.4639 24.6975V14.3469C26.1179 13.5877 30.8655 12.9221 35.5182 12.2578' fill='%233D454D'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.59424 15.9609C13.1081 15.3915 16.6207 14.917 20.2295 14.5361V24.6969C16.6207 24.6969 13.1081 24.7918 9.59424 24.7918V15.9609Z' fill='%233D454D'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.59424 25.8373C13.1081 25.8373 16.6207 25.9322 20.2295 25.8373V36.093C16.6207 35.6172 13.1081 35.1427 9.59424 34.6682V25.8373Z' fill='%233D454D'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M21.4644 25.9318H35.5187V37.7072V38.2766C30.8647 37.5174 26.1171 36.9467 21.4644 36.2824V25.9318Z' fill='%233D454D'/%3e %3c/g%3e %3c/svg%3e" alt="Download for Windows" aria-label="Download for Windows">$languagePackMessages.getMessage($messageKeyPrefix, "download.message.windows")
+                                </a>
+                                <a href="https://pingone-downloads.s3.amazonaws.com/pingid/mac-client/PingID.pkg" target="_blank">
+                                    <img src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='131' height='54' viewBox='0 0 131 54' fill='none'%3e %3cmask id='mask0_288_2573' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='131' height='50'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.5 0.299988H130.102V49.9699H0.5V0.299988Z' fill='white'/%3e %3c/mask%3e %3cg mask='url(%23mask0_288_2573)'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M125.117 0.299988H5.4907C2.736 0.299988 0.5 2.53599 0.5 5.28549V44.9901C0.5 47.7422 2.736 49.9704 5.4907 49.9704H125.118C127.874 49.9704 130.102 47.7422 130.102 44.9901H130.101V5.28549C130.101 2.53599 127.874 0.299988 125.117 0.299988ZM125.117 1.59999C127.147 1.59999 128.801 3.25359 128.801 5.28549L128.802 44.9901C128.802 47.0194 127.149 48.6704 125.118 48.6704H5.4907C3.4562 48.6704 1.8 47.0194 1.8 44.9901V5.28549C1.8 3.25359 3.4562 1.59999 5.4907 1.59999H125.117Z' fill='%233D454D'/%3e %3c/g%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M52.7501 25.8504H54.4193C55.7219 25.8504 56.1119 25.6879 56.5435 25.0288C56.8204 24.592 56.9335 24.1357 56.9335 23.3778C56.9335 21.8945 56.134 21.004 54.7833 21.004H52.7501V25.8504ZM53.7329 18.4196C56.4317 18.4196 57.2533 18.6952 58.1451 19.1983C59.631 20.0199 60.4292 21.4837 60.4292 23.3141C60.4292 25.4162 59.423 27.1062 57.6862 27.9304C56.9556 28.2697 56.2692 28.453 54.5103 28.453H52.7501V34.3056H49.5508V18.4196H53.7329Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M64.5665 22.3262V34.3057H61.5076V22.8098L64.5665 22.3262ZM64.9344 19.3804C64.9344 20.4321 64.0881 21.2771 63.0364 21.2771C62.0081 21.2771 61.1631 20.4321 61.1631 19.3804C61.1631 18.3287 62.0302 17.4824 63.0806 17.4824C64.1089 17.4824 64.9344 18.3287 64.9344 19.3804Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M68.703 22.3066C68.9786 22.7863 69.1359 23.2881 69.1359 23.7678C69.5961 23.448 69.9835 23.1737 70.4892 22.8994C71.1041 22.5822 71.9036 22.4015 72.59 22.4015C73.8939 22.4015 75.0366 23.0827 75.4006 24.0902C75.5618 24.5231 75.6294 25.0288 75.6294 25.7568V34.3056H72.6134V26.6941C72.6134 25.3707 72.3846 24.982 71.5825 24.982C70.9676 24.982 70.1681 25.3928 69.4596 26.0311V34.3056H66.3955V25.827C66.3955 24.8208 66.259 23.8588 65.9834 23.0827L68.703 22.3066Z' fill='%23253747'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M79.88 26.3753C79.88 27.5635 80.6132 28.0406 81.6883 28.0406C82.8973 28.0406 83.5616 27.4491 83.5616 26.3753C83.5616 25.2794 82.8765 24.6372 81.7078 24.6372C80.5456 24.6372 79.88 25.2794 79.88 26.3753ZM88.9787 23.8832C88.3144 24.5007 87.6761 24.7516 86.8298 24.7516C86.5334 24.7516 86.2123 24.7061 86.0303 24.6853C86.4879 25.2313 86.7167 25.8267 86.7167 26.6028C86.7167 28.6113 84.8876 30.0777 82.3968 30.0777C82.259 30.0777 82.1667 30.0777 81.9379 30.053C81.1631 30.4222 80.7276 30.6952 80.7276 31.0124C80.7276 31.1736 80.9109 31.2906 81.2294 31.2906L82.8765 31.3114C84.6575 31.3335 85.5961 31.6078 86.419 32.3618C87.1015 33.0053 87.4252 33.8022 87.4252 34.8552C87.4252 35.838 87.1275 36.5894 86.4879 37.2758C85.4583 38.3756 83.6968 38.7851 81.8677 38.7851C80.2024 38.7851 78.4877 38.5134 77.436 37.5293C76.7951 36.9313 76.4766 36.2475 76.4766 35.4467C76.4766 34.8097 76.6352 34.4886 76.7496 34.2598H79.5836C79.4692 34.5354 79.4458 34.6953 79.4458 35.0151C79.4458 35.9511 80.2245 36.4516 81.6415 36.4516C82.4176 36.4516 83.0806 36.3645 83.5616 36.0668C84.0179 35.7899 84.3169 35.3583 84.3169 34.8786C84.3169 33.8243 83.377 33.5058 82.1667 33.485L80.8641 33.4577C79.4939 33.4369 78.6034 33.3225 78.0522 33.095C77.5023 32.887 77.1604 32.3618 77.1604 31.5662C77.1604 30.8083 77.3892 30.0985 79.3106 29.598C77.618 29.1638 76.7951 28.09 76.7951 26.3493C76.7951 23.9521 78.7399 22.4012 81.7325 22.4012C82.3968 22.4012 82.9909 22.4909 83.8359 22.6924C84.4742 22.8536 84.8876 22.9472 85.275 22.9472C86.12 22.9472 86.9884 22.5819 87.6995 21.9397L88.9787 23.8832Z' fill='%23253747'/%3e %3cmask id='mask1_288_2573' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='4' width='131' height='50'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.5 53.6704H130.102V4H0.5V53.6704Z' fill='white'/%3e %3c/mask%3e %3cg mask='url(%23mask1_288_2573)'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M89.7568 36.8653H113.747V12.8738H89.7568V36.8653Z' fill='%23BB202B'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M92.7559 25.3122H95.9864V22.1714H92.7559V25.3122Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M92.7544 34.1652H95.9849V26.9424H92.7544V34.1652Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M100.951 31.8635H101.656C102.584 31.8635 103.28 31.5476 103.744 30.9171C104.208 30.2879 104.441 29.3883 104.441 28.2196C104.441 27.4526 104.353 26.8273 104.182 26.3463C104.012 25.8653 103.779 25.4935 103.486 25.2296C103.195 24.9657 102.851 24.7863 102.455 24.6888C102.06 24.5913 101.644 24.5419 101.209 24.5419H100.951V31.8635ZM97.7222 22.1707H102.344C103.225 22.1707 104.008 22.3111 104.689 22.5919C105.37 22.8727 105.946 23.2744 106.415 23.7944C106.885 24.317 107.241 24.941 107.481 25.6677C107.722 26.3957 107.843 27.2056 107.843 28.0987C107.843 29.1426 107.707 30.0448 107.438 30.8066C107.169 31.5671 106.779 32.1976 106.271 32.6968C105.76 33.1934 105.133 33.5639 104.389 33.8044C103.644 34.0449 102.796 34.1658 101.844 34.1658H97.7222V22.1707Z' fill='white'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M116.125 35.9247H116.119L115.741 36.8646H115.664L115.285 35.9247H115.281V36.8646H115.154V35.8077H115.373L115.709 36.6553L116.034 35.8077H116.252V36.8646H116.125V35.9247ZM114.497 35.9247H114.154V35.8077H114.966V35.9247H114.623V36.8646H114.497V35.9247Z' fill='white'/%3e %3c/g%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M32.0091 25.1486C31.9714 20.9587 35.4398 18.9203 35.5984 18.8254C33.6341 15.9615 30.5895 15.5702 29.5196 15.539C26.9625 15.2699 24.4821 17.0691 23.1795 17.0691C21.8509 17.0691 19.845 15.565 17.6831 15.6092C14.9011 15.6521 12.2985 17.2628 10.8711 19.764C7.92529 24.8639 10.1223 32.3584 12.9446 36.4807C14.3564 38.5009 16.0061 40.7538 18.1654 40.6745C20.2779 40.5874 21.067 39.329 23.6163 39.329C26.1422 39.329 26.8832 40.6745 29.0854 40.6238C31.3526 40.5874 32.78 38.5958 34.1424 36.5587C35.7739 34.246 36.4291 31.9658 36.4551 31.8488C36.4031 31.8306 32.0533 30.1705 32.0091 25.1486Z' fill='%233D454D'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M27.8494 12.8271C28.9856 11.4062 29.763 9.47305 29.5472 7.51135C27.9027 7.58415 25.8461 8.64885 24.6618 10.0386C23.614 11.2632 22.678 13.2704 22.9198 15.158C24.7671 15.2958 26.6638 14.2259 27.8494 12.8271Z' fill='%233D454D'/%3e %3c/svg%3e" alt="Download for MacOS" aria-label="Download for MacOS">$languagePackMessages.getMessage($messageKeyPrefix, "download.message.mac")
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-block" data-id="textblock">
+                            <div class="text-block--overflow-wrap">
+                                <div class="stack" data-id="stack">
+                                    <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                       onclick="cancelDevicePairing()">$languagePackMessages.getMessage($messageKeyPrefix,
+                                        "cancel.button.title")
+                                        <input type="hidden" name="$escape.escape($cancelDevicePairing)" value=""/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var pollingFlag = true;
+    var POLLING_DELAY = 2000;
+
+    jQuery(document).ready(function () {
+        // No QR code generation needed
+    });
+
+    function cancelDevicePairing() {
+        pollingFlag = false;
+        document.forms[0]['$cancelDevicePairing'].value = 'true';
+        submit('$cancelDevicePairing');
+    }
+
+    function cancelPoll() {
+        pollingFlag = false;
+        document.forms[0]['$pollAuthenticationStatus'].value = 'false';
+        submit('$pollAuthenticationStatus');
+    }
+
+    function doPoll(resumePath) {
+        if (pollingFlag === true) {
+            timer = setTimeout(function () {
+                jQuery.ajax({
+                    type: 'POST',
+                    url: resumePath,
+                    data: {
+                        '$pollAuthenticationStatus': 'true',
+                    },
+                    success: function (result) {
+                        var response = JSON.parse(JSON.stringify(result));
+                        if (response.continue_polling === true) {
+                            doPoll(resumePath);
+                        } else {
+                            cancelPoll();
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        cancelPoll();
+                    }
+                });
+            }, POLLING_DELAY);
+        }
+    }
+
+    function submit(inputName) {
+        // Prevent unused inputs from being submitted
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.name !== inputName) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+
+    doPoll('$resumePath');
+</script>
+</body>
+</html>

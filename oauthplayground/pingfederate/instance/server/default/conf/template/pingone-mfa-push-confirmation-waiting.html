@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+a user has initiated multi-factor authentication for
+mobile push notification.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-push-confirmation-waiting.html -->
+
+#set( $messageKeyPrefix = "pingone.mfa.push.confirmation.waiting." )
+#set( $canChangeDevice = ($allowChangeDevice == true && $devices && ($devices.size() > 1 || ($devices.size() == 1 && $manualPairing == true))) )
+#set( $canForgotDevice = ($backupAuthEnabled && !$displayOneTimeAndPairedDevices && $oneTimeDevices && $oneTimeDevices.size() > 0 && $devices && $devices.size() == 1) )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <div class="org-logo"><img class="org-logo__image"
+                                               src="assets/images/ping-logo.svg"
+                                               alt="Company Logo"/></div>
+                    <div class="stack stack--small" data-id="stack">
+                        <h1 class="heading-text centered-text icon-heading" data-id="heading">
+                            <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                <path
+                                        d="M16,18H7V4H16M11.5,22A1.5,1.5 0 0,1 10,20.5A1.5,1.5 0 0,1 11.5,19A1.5,1.5 0 0,1 13,20.5A1.5,1.5 0 0,1 11.5,22M15.5,1H7.5A2.5,2.5 0 0,0 5,3.5V20.5A2.5,2.5 0 0,0 7.5,23H15.5A2.5,2.5 0 0,0 18,20.5V3.5A2.5,2.5 0 0,0 15.5,1Z"
+                                        style="fill: rgb(61, 69, 77);"
+                                />
+                            </svg>
+                            <span style="margin-left: .5em">
+                                #if($targetApplicationName)
+                                    $targetApplicationName
+                                #elseif($selectedDevice.sourceDeviceType == "PINGID_MOBILE")
+                                    $languagePackMessages.getMessage("pingid_mobile.${messageKeyPrefix}","header")
+                                #else
+                                    $languagePackMessages.getMessage($messageKeyPrefix,"header")
+                                #end
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="ping-body-container" style="min-height: auto;margin-top: 16px">
+                        #if($numberMatching)
+                            <div class="text-block branding-template-link-container" data-id="message-content">
+                                <div class="text-block--overflow-wrap">
+                                    #if($numberMatching.type == "ENTER_MANUALLY")
+                                        #if($selectedDevice.sourceDeviceType == "PINGID_MOBILE")
+                                            $languagePackMessages.getMessage("pingid_mobile.${messageKeyPrefix}", "enter.manually.message")
+                                        #else
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "enter.manually.message")
+                                        #end
+                                    #else
+                                        #if($selectedDevice.sourceDeviceType == "PINGID_MOBILE")
+                                            $languagePackMessages.getMessage("pingid_mobile.${messageKeyPrefix}", "select.number.message")
+                                        #else
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "select.number.message")
+                                        #end
+                                    #end
+                                </div>
+                            </div>
+                            <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                                <svg width="85" height="164" viewBox="0 0 85 164" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M35.7145 11.9032H47.9363C49.0328 11.9032 49.9206 11.0151 49.9206 9.91935C49.9206 8.82364 49.0328 7.93548 47.9363 7.93548H35.7145C34.6175 7.93548 33.7302 8.82364 33.7302 9.91935C33.7302 11.0151 34.6175 11.9032 35.7145 11.9032Z" fill="#515960"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.6825 10.5806C30.4277 10.5806 31.0317 9.98842 31.0317 9.25831C31.0317 8.52771 30.4277 7.93548 29.6825 7.93548C28.9373 7.93548 28.3333 8.52771 28.3333 9.25831C28.3333 9.98842 28.9373 10.5806 29.6825 10.5806Z" fill="#515960"></path>
+                                    <mask id="mask0_1597_1513" maskUnits="userSpaceOnUse" x="0" y="0" width="85" height="164">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.95911e-05H84.9934V164H0V4.95911e-05Z" fill="white"></path>
+                                    </mask>
+                                    <g mask="url(#mask0_1597_1513)">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M77.0454 160.095H7.95494C5.76944 160.095 3.98094 158.338 3.98094 156.19V140.246H81.0194V156.19C81.0194 158.338 79.2314 160.095 77.0454 160.095ZM3.98044 136.341H81.0194V20.5H3.98044V136.341ZM7.95494 3.90462H77.0454C79.2314 3.90462 81.0194 5.66198 81.0194 7.80969V16.5955H3.98094V7.80969C3.98094 5.66198 5.76944 3.90462 7.95494 3.90462ZM77.0454 4.95911e-05H7.95494C3.57244 4.95911e-05 0.00643896 3.50297 0.00643896 7.80969V18.482C0.00593896 18.5046 -6.10352e-05 18.5252 -6.10352e-05 18.5478V138.294C-6.10352e-05 138.316 0.00593896 138.337 0.00643896 138.359V156.19C0.00643896 160.497 3.57244 164 7.95494 164H77.0454C81.4279 164 84.9934 160.497 84.9934 156.19V138.294V18.5478V7.80969C84.9934 3.50297 81.4279 4.95911e-05 77.0454 4.95911e-05Z" fill="#515960"></path>
+                                    </g>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M43.1754 153.335C40.9914 153.335 39.2132 151.594 39.2132 149.453C39.2132 147.312 40.9914 145.568 43.1754 145.568C45.3593 145.568 47.1355 147.312 47.1355 149.453C47.1355 151.594 45.3593 153.335 43.1754 153.335ZM43.1754 141.516C38.7107 141.516 35.0793 145.076 35.0793 149.453C35.0793 153.828 38.7107 157.387 43.1754 157.387C47.6384 157.387 51.2698 153.828 51.2698 149.453C51.2698 145.076 47.6384 141.516 43.1754 141.516Z" fill="#515960"></path>
+                                </svg>
+                                <div data-id="number" style="position: absolute; font-size: 44px; font-weight: 400; color: rgb(81, 89, 96); top: 50%; left: 50%; transform: translate(-50%, -50%);">$numberMatching.number</div>
+                            </div>
+                        #else
+                            <div class="spinner spinner--margin-bottom-small">
+                                <div class="spinner__icon" data-id="spinner"></div>
+                            </div>
+                        #end
+                    </div>
+                    <div class="icon-feedback icon-feedback--success" style="margin-bottom: 10px;">
+                        <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "message")</p>
+                    </div>
+                    <div class="form-aside">
+                        <p class="text-block text-block--small"  style="margin-bottom: 5px;">
+                            <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "request.sent.title")</span>
+                        </p>
+                        #set($deviceNickname = $selectedDevice.nickname)
+                        #if(!$deviceNickname || $deviceNickname.trim() == "")
+                            #set($deviceNickname = $selectedDevice.name)
+                        #end
+                        <p class="text-block">
+                            <span class="text-block__text">$escape.escape($deviceNickname)</span>
+                            #if($canChangeDevice)
+                                <a tabindex="0" data-id="change-method-link" class="anchor" onclick="unselectDevice()">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "change.device.button.title")
+                                </a>
+                            #end
+                        </p>
+                    </div>
+                    #if($selectedDevice.otpEnabled == true)
+                    <div class="text-block" data-id="textblock">
+                        <div class="text-block--overflow-wrap">
+                            #if($canChangeDevice)
+                                <button class="button file-input--button button--tertiary" data-id="change-button"
+                                        type="button" onclick="usePasscode()">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "use.passcode.button.title")
+                                </button>
+                            #else
+                                <a onclick="usePasscode()" data-id="change-button">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "use.passcode.button.title")
+                                </a>
+                            #end
+                        </div>
+                    </div>
+                    #end
+                    #if($canForgotDevice)
+                    <div class="text-block" data-id="textblock">
+                        <div class="text-block--overflow-wrap">
+                            <div class="stack" data-id="stack">
+                                <div>
+                                    <a tabindex="0" id="forgot-device" data-id="content-link" target="_self" class="anchor"
+                                            onclick="forgotDevice()" style="margin-top: 10px; display: inline-block;">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "forgot.device.button.title")
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    #end
+                    #if($adminMessage && $adminMessage != "")
+                    <div class="text-block text-block--small" data-id="admin-message" style="margin-top: 15px; text-align: center; color: #6b7280; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                            <path d="M13.5417 9.37501H11.4583V7.29168H13.5417V9.37501ZM13.5417 17.7083H11.4583V11.4583H13.5417V17.7083ZM12.5 2.08334C11.1321 2.08334 9.77753 2.35278 8.51372 2.87627C7.24992 3.39975 6.10159 4.16704 5.13431 5.13431C3.18081 7.08782 2.08334 9.73734 2.08334 12.5C2.08334 15.2627 3.18081 17.9122 5.13431 19.8657C6.10159 20.833 7.24992 21.6003 8.51372 22.1238C9.77753 22.6472 11.1321 22.9167 12.5 22.9167C15.2627 22.9167 17.9122 21.8192 19.8657 19.8657C21.8192 17.9122 22.9167 15.2627 22.9167 12.5C22.9167 11.1321 22.6472 9.77753 22.1238 8.51372C21.6003 7.24992 20.833 6.10159 19.8657 5.13431C18.8984 4.16704 17.7501 3.39975 16.4863 2.87627C15.2225 2.35278 13.8679 2.08334 12.5 2.08334Z" fill="#303F5F"/>
+                        </svg>
+                        <span>$adminMessage</span>
+                    </div>
+                    #end
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var pollingFlag = true;
+    var POLLING_DELAY = 2000;
+
+    function unselectDevice()
+    {
+        pollingFlag = false;
+        submit('$selectedDeviceId');
+    }
+
+    function submit(inputName)
+    {
+        // Prevent unused inputs from being submitted
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++)
+        {
+            var input = inputs[i];
+            if (input.name !== inputName)
+            {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+
+
+    function cancelPoll(deviceId)
+    {
+        pollingFlag = false;
+        document.forms[0]['$pollAuthenticationStatus'].value = 'false';
+        // remove 'selected.device.id'
+        submit('$pollAuthenticationStatus');
+    }
+
+    function usePasscode()
+    {
+        pollingFlag = false;
+        document.forms[0]['$usePasscode'].value = 'true';
+        submit('$usePasscode');
+    }
+
+    function forgotDevice() {
+        pollingFlag = false;
+        document.forms[0]['$forgotDevice'].value = 'true';
+        submit('$forgotDevice');
+    }
+
+    function doPoll(resumePath, deviceId)
+    {
+        if(pollingFlag == true)
+        {
+         timer=setTimeout(function() {
+                jQuery.ajax({ type: 'POST',
+                      url: resumePath,
+                      data: {
+                        '$pollAuthenticationStatus': 'true',
+                      },
+                      success: function(result) {
+                            var response = JSON.parse(JSON.stringify(result));
+                            if(response.continue_polling === true)
+                            {
+                                doPoll(resumePath, deviceId);
+                            }
+                            else
+                            {
+                                 cancelPoll(deviceId);
+                                 return;
+                            }
+
+                      },
+                      error: function(jqXHR, textStatus, errorThrown) {
+                             cancelPoll(deviceId);
+                             return;
+                      }
+                });
+
+                }, POLLING_DELAY);
+        }
+
+    }
+
+    onload = function () {
+        setTimeout(doPoll, POLLING_DELAY, '$resumePath', '$selectedDevice.id');
+    }
+</script>
+
+<form id='form' method="post" action="$resumePath" autocomplete="off">
+    <input type="hidden" name="$escape.escape($pollAuthenticationStatus)" value="">
+    <input type="hidden" name="$escape.escape($selectedDeviceId)" value=""/>
+    <input type="hidden" name="$escape.escape($usePasscode)" value=""/>
+    <input type="hidden" name="$escape.escape($forgotDevice)" value=""/>
+</form>
+
+</body>
+</html>

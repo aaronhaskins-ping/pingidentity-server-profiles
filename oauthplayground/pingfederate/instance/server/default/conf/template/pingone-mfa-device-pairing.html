@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+a user must select a device pairing method for multi-factor
+authentication.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-device-pairing.html -->
+
+#set( $messageKeyPrefix = "pingone.mfa.device.pairing." )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
+    user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <div class="org-logo">
+                        <img class="org-logo__image" src="assets/images/ping-logo.svg" alt="Company Logo"/>
+                    </div>
+                    #if($errorMessageKey)
+                        <div class="feedback feedback--error" data-id="feedback" style="justify-content: center;">
+                            <div style="display: flex;">
+                                <span class="feedback__icon pingicon-error-triangle"></span>
+                                <div class="feedback__message">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
+                                </div>
+                            </div>
+                        </div>
+                    #end
+                    #if($errorMessage)
+                        <div class="feedback feedback--error" data-id="feedback" style="justify-content: center;">
+                            <div style="display: flex;">
+                                <span class="feedback__icon pingicon-error-triangle"></span>
+                                <div class="feedback__message">$errorMessage</div>
+                            </div>
+                        </div>
+                    #end
+                    <div class="stack stack--large" data-id="stack">
+                        <div>
+                            <h1 class="heading" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix,
+                                "header")</h1>
+                            <h4 class="heading heading--4" data-id="heading">
+                                $languagePackMessages.getMessage($messageKeyPrefix, "message")</h4>
+                        </div>
+                        <div data-id="tile-selector">
+                            <div class="tile-selector tile-selector--stacked">
+                                #foreach($devicePairingMethod in $devicePairingMethods)
+                                    #set ($deviceMessageKey = ${devicePairingMethod.deviceType.toLowerCase()})
+                                    #set( $deviceMessageKeyPrefix = "${deviceMessageKey}.$messageKeyPrefix" )
+                                    #set( $deviceIcon = $languagePackMessages.getMessage($deviceMessageKeyPrefix, "icon"))
+
+                                    #set($relyingPartyName = "")
+                                    #if( $languagePackMessages.getMessage($deviceMessageKeyPrefix, "relying.party.name") != "${deviceMessageKeyPrefix}relying.party.name")
+                                        #set( $relyingPartyName = $languagePackMessages.getMessage($deviceMessageKeyPrefix, "relying.party.name"))
+                                    #end
+
+                                    #set( $deviceApplicationName = "")
+                                    #if($devicePairingMethod.applicationName)
+                                        #set( $deviceApplicationName = $devicePairingMethod.applicationName)
+                                    #end
+
+                                    #if($deviceIcon == "security_key" || $deviceIcon == "fido2")
+                                        <div id="security_key_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small"
+                                             data-id="tile-selector-button-pingoneAuth" role="button" tabindex="0"
+                                             onclick="selectDevicePairingMethod('$escape.escape($devicePairingMethod.deviceType)', '$escape.escape($deviceApplicationName)', '$escape.escape($relyingPartyName)')">
+                                    #elseif($deviceIcon == "platform")
+                                        <div id="platform_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small"
+                                        data-id="tile-selector-button-pingoneAuth" role="button" tabindex="0"
+                                        onclick="selectDevicePairingMethod('$escape.escape($devicePairingMethod.deviceType)', '$escape.escape($deviceApplicationName)', '$escape.escape($relyingPartyName)')">
+                                    #elseif($deviceIcon == "pingid_desktop_gen2")
+                                        <div class="tile-button--side-icon tile-button tile-button--stacked-small"
+                                             data-id="tile-selector-button-pingoneAuth" role="button" tabindex="0"
+                                             onclick="selectDevicePairingMethod('$escape.escape($devicePairingMethod.deviceType)', '', '', '$escape.escape($devicePairingMethod.port)')">
+                                    #else
+                                        <div class="tile-button--side-icon tile-button tile-button--stacked-small"
+                                        data-id="tile-selector-button-pingoneAuth" role="button" tabindex="0"
+                                        onclick="selectDevicePairingMethod('$escape.escape($devicePairingMethod.deviceType)', '$escape.escape($deviceApplicationName)')">
+                                    #end
+
+                                    #if($deviceIcon == "security_key" || $deviceIcon == "fido2")
+                                        <div id="security_key_icon_container_id"  class="tile-button__icon-container">
+                                    #elseif($deviceIcon == "platform")
+                                        <div id="platform_icon_container_id"  class="tile-button__icon-container">
+                                    #else
+                                        <div class="tile-button__icon-container">
+                                    #end
+                                    #if($deviceIcon == "sms")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path
+                                                    d="M20,2A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H6L2,22V4C2,2.89 2.9,2 4,2H20M4,4V17.17L5.17,16H20V4H4M6,7H18V9H6V7M6,11H15V13H6V11Z"
+                                                    style="fill: rgb(61, 69, 77);"/>
+                                        </svg>
+                                    #elseif($deviceIcon == "email")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path
+                                                    d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6M20 6L12 11L4 6H20M20 18H4V8L12 13L20 8V18Z"
+                                                    style="fill: rgb(61, 69, 77);"/>
+                                        </svg>
+                                    #elseif($deviceIcon == "voice")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5M5,5H6.5C6.6,5.9 6.8,6.8 7,7.6L5.8,8.8C5.4,7.6 5.1,6.3 5,5M19,19C17.7,18.9 16.4,18.6 15.2,18.2L16.4,17C17.2,17.2 18.1,17.4 19,17.4V19Z"
+                                                  style="fill: rgb(61, 69, 77);"></path>
+                                        </svg>
+                                    #elseif($deviceIcon == "mobile")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path
+                                                    d="M16,18H7V4H16M11.5,22A1.5,1.5 0 0,1 10,20.5A1.5,1.5 0 0,1 11.5,19A1.5,1.5 0 0,1 13,20.5A1.5,1.5 0 0,1 11.5,22M15.5,1H7.5A2.5,2.5 0 0,0 5,3.5V20.5A2.5,2.5 0 0,0 7.5,23H15.5A2.5,2.5 0 0,0 18,20.5V3.5A2.5,2.5 0 0,0 15.5,1Z"
+                                                    style="fill: rgb(61, 69, 77);"
+                                            />
+                                        </svg>
+                                    #elseif($deviceIcon == "platform")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M17.81,4.47C17.73,4.47 17.65,4.45 17.58,4.41C15.66,3.42 14,3 12,3C10.03,3 8.15,3.47 6.44,4.41C6.2,4.54 5.9,4.45 5.76,4.21C5.63,3.97 5.72,3.66 5.96,3.53C7.82,2.5 9.86,2 12,2C14.14,2 16,2.47 18.04,3.5C18.29,3.65 18.38,3.95 18.25,4.19C18.16,4.37 18,4.47 17.81,4.47M3.5,9.72C3.4,9.72 3.3,9.69 3.21,9.63C3,9.47 2.93,9.16 3.09,8.93C4.08,7.53 5.34,6.43 6.84,5.66C10,4.04 14,4.03 17.15,5.65C18.65,6.42 19.91,7.5 20.9,8.9C21.06,9.12 21,9.44 20.78,9.6C20.55,9.76 20.24,9.71 20.08,9.5C19.18,8.22 18.04,7.23 16.69,6.54C13.82,5.07 10.15,5.07 7.29,6.55C5.93,7.25 4.79,8.25 3.89,9.5C3.81,9.65 3.66,9.72 3.5,9.72M9.75,21.79C9.62,21.79 9.5,21.74 9.4,21.64C8.53,20.77 8.06,20.21 7.39,19C6.7,17.77 6.34,16.27 6.34,14.66C6.34,11.69 8.88,9.27 12,9.27C15.12,9.27 17.66,11.69 17.66,14.66A0.5,0.5 0 0,1 17.16,15.16A0.5,0.5 0 0,1 16.66,14.66C16.66,12.24 14.57,10.27 12,10.27C9.43,10.27 7.34,12.24 7.34,14.66C7.34,16.1 7.66,17.43 8.27,18.5C8.91,19.66 9.35,20.15 10.12,20.93C10.31,21.13 10.31,21.44 10.12,21.64C10,21.74 9.88,21.79 9.75,21.79M16.92,19.94C15.73,19.94 14.68,19.64 13.82,19.05C12.33,18.04 11.44,16.4 11.44,14.66A0.5,0.5 0 0,1 11.94,14.16A0.5,0.5 0 0,1 12.44,14.66C12.44,16.07 13.16,17.4 14.38,18.22C15.09,18.7 15.92,18.93 16.92,18.93C17.16,18.93 17.56,18.9 17.96,18.83C18.23,18.78 18.5,18.96 18.54,19.24C18.59,19.5 18.41,19.77 18.13,19.82C17.56,19.93 17.06,19.94 16.92,19.94M14.91,22C14.87,22 14.82,22 14.78,22C13.19,21.54 12.15,20.95 11.06,19.88C9.66,18.5 8.89,16.64 8.89,14.66C8.89,13.04 10.27,11.72 11.97,11.72C13.67,11.72 15.05,13.04 15.05,14.66C15.05,15.73 16,16.6 17.13,16.6C18.28,16.6 19.21,15.73 19.21,14.66C19.21,10.89 15.96,7.83 11.96,7.83C9.12,7.83 6.5,9.41 5.35,11.86C4.96,12.67 4.76,13.62 4.76,14.66C4.76,15.44 4.83,16.67 5.43,18.27C5.53,18.53 5.4,18.82 5.14,18.91C4.88,19 4.59,18.87 4.5,18.62C4,17.31 3.77,16 3.77,14.66C3.77,13.46 4,12.37 4.45,11.42C5.78,8.63 8.73,6.82 11.96,6.82C16.5,6.82 20.21,10.33 20.21,14.65C20.21,16.27 18.83,17.59 17.13,17.59C15.43,17.59 14.05,16.27 14.05,14.65C14.05,13.58 13.12,12.71 11.97,12.71C10.82,12.71 9.89,13.58 9.89,14.65C9.89,16.36 10.55,17.96 11.76,19.16C12.71,20.1 13.62,20.62 15.03,21C15.3,21.08 15.45,21.36 15.38,21.62C15.33,21.85 15.12,22 14.91,22Z"
+                                                  style="fill: rgb(61, 69, 77);"></path>
+                                        </svg>
+                                    #elseif($deviceIcon == "security_key")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M8 15C8.55 15 9 15.45 9 16C9 16.55 8.55 17 8 17C7.45 17 7 16.55 7 16C7 15.45 7.45 15 8 15M15.07 4.69L16.5 6.1L15.07 7.5L13.66 6.1L15.07 4.69M17.9 7.5L19.31 8.93L17.9 10.34L16.5 8.93L17.9 7.5M8 13C6.34 13 5 14.34 5 16C5 17.66 6.34 19 8 19C9.66 19 11 17.66 11 16C11 14.34 9.66 13 8 13M9.77 4.33L10.5 5.08L14.29 1.29C14.47 1.11 14.72 1 15 1C15.28 1 15.53 1.11 15.71 1.29L22.78 8.36L22.78 8.37C22.92 8.54 23 8.76 23 9C23 9.3 22.87 9.57 22.66 9.76L22.66 9.76L18.93 13.5L19.67 14.23L12.95 20.95C11.68 22.22 9.93 23 8 23C4.13 23 1 19.87 1 16C1 14.07 1.78 12.32 3.05 11.05L9.77 4.33M20.59 9L15 3.41L11.93 6.5L17.5 12.08L20.59 9Z"
+                                                  style="fill: rgb(61, 69, 77);"></path>
+                                        </svg>
+                                    #elseif($deviceIcon == "whatsapp")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7 8.5 7 9.71C7 10.93 7.89 12.1 8 12.27C8.14 12.44 9.76 14.94 12.25 16C12.84 16.27 13.3 16.42 13.66 16.53C14.25 16.72 14.79 16.69 15.22 16.63C15.7 16.56 16.68 16.03 16.89 15.45C17.1 14.87 17.1 14.38 17.04 14.27C16.97 14.17 16.81 14.11 16.56 14C16.31 13.86 15.09 13.26 14.87 13.18C14.64 13.1 14.5 13.06 14.31 13.3C14.15 13.55 13.67 14.11 13.53 14.27C13.38 14.44 13.24 14.46 13 14.34C12.74 14.21 11.94 13.95 11 13.11C10.26 12.45 9.77 11.64 9.62 11.39C9.5 11.15 9.61 11 9.73 10.89C9.84 10.78 10 10.6 10.1 10.45C10.23 10.31 10.27 10.2 10.35 10.04C10.43 9.87 10.39 9.73 10.33 9.61C10.27 9.5 9.77 8.26 9.56 7.77C9.36 7.29 9.16 7.35 9 7.34C8.86 7.34 8.7 7.33 8.53 7.33Z"
+                                                  style="fill: rgb(61, 69, 77);">
+                                            </path>
+                                        </svg>
+                                    #elseif($deviceIcon == "fido2")
+                                        <svg viewBox="0 0 27 26" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M10.2632 12.3158C13.6641 12.3158 16.4211 9.55881 16.4211 6.15789C16.4211 2.75698 13.6641 0 10.2632 0C6.86225 0 4.10527 2.75698 4.10527 6.15789C4.10527 9.55881 6.86225 12.3158 10.2632 12.3158Z" fill="#3D454D" />
+                                            <path d="M26.6842 12.3158C26.6842 9.67474 24.5631 7.51263 21.9084 7.51263C19.2674 7.51263 17.1053 9.63369 17.1053 12.2884C17.1053 14.1495 18.1589 15.8326 19.8421 16.6263V23.9474L21.8947 26L25.3158 22.5789L23.2631 20.5263L25.3158 18.4737L23.6189 16.7768C25.4663 16.0653 26.6842 14.2863 26.6842 12.3158ZM21.8947 12.3158C21.1421 12.3158 20.5263 11.7 20.5263 10.9474C20.5263 10.1947 21.1421 9.57895 21.8947 9.57895C22.6474 9.57895 23.2631 10.1947 23.2631 10.9474C23.2631 11.7 22.6474 12.3158 21.8947 12.3158Z" fill="#3D454D" />
+                                            <path d="M15.6547 15.08C14.6011 14.6147 13.4653 14.3684 12.3158 14.3684H8.21053C3.68105 14.3684 0 18.0495 0 22.5789V25.3158H17.7895V17.7758C16.8726 17.0642 16.1337 16.1474 15.6547 15.08Z" fill="#3D454D" />
+                                        </svg>
+                                    #elseif($deviceIcon == "oath_token")
+                                        <svg width="27" height="27" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 27" fill="none">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9291 0C16.2228 0 15.5436 0.250813 15.0352 0.759219L1.93727 13.8557C1.93592 13.8571 1.93321 13.8598 1.93185 13.8612C-0.8515 16.6432 -0.596619 21.41 2.49855 24.5065C4.15528 26.1619 6.28923 27.0051 8.34183 27.0051C10.126 27.0051 11.8492 26.3679 13.1439 25.0732C13.1778 25.0393 13.2063 25.0027 13.2388 24.9688L26.2418 11.9658C27.3345 10.8717 27.2342 8.98183 26.0181 7.76437L19.2366 0.982917C18.5845 0.332158 17.7412 0 16.9291 0ZM16.9291 2.71169C17.0268 2.71169 17.18 2.76186 17.3196 2.90014L24.0997 9.68159C24.2597 9.84157 24.2936 10.011 24.2895 10.0829L11.2784 23.094L11.1754 23.2065C10.2453 24.104 9.12546 24.2938 8.34184 24.2938C6.93051 24.2938 5.50019 23.6729 4.41695 22.5897C3.39336 21.5661 2.79005 20.2632 2.7182 18.9224C2.65448 17.7103 3.04086 16.6108 3.80822 15.8191L3.85431 15.773L16.9156 2.71169H16.9291Z" fill="#3D454D"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.97243 16.8306C11.1262 17.9843 11.1262 19.8553 9.97243 21.009C8.81869 22.1627 6.94776 22.1627 5.79402 21.009C4.64028 19.8553 4.64028 17.9843 5.79402 16.8306C6.94776 15.6768 8.81869 15.6768 9.97243 16.8306Z" fill="#3D454D"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.7589 8.82056L12.4942 17.0852L9.92236 14.5147L18.1884 6.25006L20.7589 8.82056Z" fill="#3D454D"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.9782 4.74667C22.5254 4.74667 22.1593 4.37926 22.1593 3.9278C22.1593 3.47498 22.5254 3.10757 22.9782 3.10757C23.4297 3.10757 23.7971 3.47498 23.7971 3.9278C23.7971 4.37926 23.4297 4.74667 22.9782 4.74667ZM22.9782 1.81689C21.8136 1.81689 20.8687 2.76185 20.8687 3.92779C20.8687 5.09238 21.8136 6.03598 22.9782 6.03598C24.1428 6.03598 25.0877 5.09238 25.0877 3.92779C25.0877 2.76185 24.1428 1.81689 22.9782 1.81689Z" fill="#3D454D"></path>
+                                        </svg>
+                                    #elseif($deviceIcon == "pingid_desktop_gen2")
+                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4.73169 5.30223V21.6983C4.73169 21.9334 4.87533 22.124 5.05252 22.124H26.9475C27.1247 22.124 27.2683 21.9334 27.2683 21.6983V5.30223C27.2683 5.06708 27.1247 4.87646 26.9475 4.87646H5.05252C4.87533 4.87646 4.73169 5.06708 4.73169 5.30223Z" fill="white" stroke="#3D454D" stroke-width="2" stroke-miterlimit="10"></path>
+                                                <path d="M26.9408 22.2556L30.9433 26.8057C31.0464 26.899 30.9997 27.124 30.877 27.124H1.12297C1.00027 27.124 0.953582 26.899 1.05673 26.8057L5.56949 22.2526C5.65202 22.1699 5.75626 22.124 5.86484 22.124H26.6563C26.7616 22.124 26.8637 22.1715 26.9408 22.2556Z" fill="white" stroke="#3D454D" stroke-width="2" stroke-miterlimit="10"></path>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0953 15.653C18.9668 15.653 17.8233 14.8858 17.8233 13.42C17.8233 12.4991 17.1117 12.016 16.4097 12.016C16.07 12.0093 15.7414 12.1371 15.4952 12.3715C15.2209 12.646 15.0742 13.0577 15.0742 13.5682C15.0742 16.0757 16.3658 17.5484 19.141 18.2167C19.256 18.2434 19.3573 18.3116 19.4253 18.4082C19.4933 18.5048 19.5233 18.6233 19.5095 18.7407C19.4958 18.8581 19.4392 18.9664 19.3507 19.0446C19.2623 19.123 19.148 19.1658 19.0299 19.1651C18.992 19.1653 18.9542 19.1606 18.9175 19.1514C15.7296 18.3883 14.1186 16.5094 14.1186 13.5682C14.1186 12.5883 14.5038 12.0036 14.8261 11.6852C15.2508 11.2753 15.8197 11.049 16.4097 11.0553C17.9508 11.0553 18.7831 12.274 18.7831 13.42C18.7831 14.2998 19.4426 14.6923 20.0953 14.6923C20.4593 14.696 20.8124 14.5678 21.0893 14.3313C21.238 14.1911 21.3546 14.0205 21.4313 13.8309C21.5079 13.6414 21.5428 13.4376 21.5336 13.2334C21.5336 10.2826 18.8475 8.46134 16.359 8.46134C14.7136 8.46134 13.311 9.17913 12.4047 10.4802C11.3489 11.9982 11.1706 14.1104 11.911 16.1292C11.9443 16.246 11.9321 16.3711 11.8769 16.4792C11.8217 16.5872 11.7277 16.6705 11.6138 16.7121C11.4998 16.7536 11.3743 16.7504 11.2626 16.7032C11.1509 16.6559 11.0612 16.568 11.0116 16.4573C10.156 14.1433 10.3836 11.7017 11.619 9.92575C12.1513 9.16498 12.8616 8.54622 13.6879 8.12349C14.5141 7.70076 15.4312 7.48692 16.359 7.50062C18.1113 7.50062 19.7072 8.14842 20.8535 9.32324C21.8872 10.3663 22.4769 11.7698 22.4988 13.2389C22.5095 13.5784 22.4462 13.9162 22.3133 14.2288C22.1806 14.5413 21.9814 14.8213 21.7296 15.0491C21.2776 15.4448 20.6957 15.6599 20.0953 15.653ZM16.263 9.23266C18.3868 9.10365 20.5916 10.7547 20.5916 13.3006C20.5916 13.428 20.541 13.5501 20.4511 13.6403C20.361 13.7303 20.239 13.781 20.1117 13.781C19.9845 13.781 19.8624 13.7303 19.7724 13.6403C19.6824 13.5501 19.6318 13.428 19.6318 13.3006C19.6349 12.8688 19.5477 12.4412 19.3759 12.0452C19.2041 11.6491 18.9515 11.2934 18.6343 11.0008C18.3171 10.7082 17.9423 10.4853 17.5339 10.3462C17.1255 10.2072 16.6926 10.1551 16.263 10.1934C14.7643 10.3306 13.2753 11.3394 13.2081 13.4873C13.1327 15.8753 14.0171 17.5072 15.7529 18.6148C15.8405 18.6708 15.9075 18.7537 15.944 18.851C15.9805 18.9484 15.9844 19.0549 15.9552 19.1547C15.926 19.2545 15.8652 19.3422 15.782 19.4043C15.6988 19.4666 15.5977 19.5001 15.4938 19.5C15.4028 19.5005 15.3136 19.4742 15.2374 19.4245C13.226 18.1413 12.1757 16.1979 12.2483 13.4873C12.3224 10.7012 14.3119 9.35206 16.263 9.23266ZM16.008 13.4873C16.008 13.3599 16.0585 13.2376 16.1485 13.1476C16.2385 13.0576 16.3606 13.0069 16.4878 13.0069C16.6151 13.0069 16.7372 13.0576 16.8272 13.1476C16.9172 13.2376 16.9677 13.3599 16.9677 13.4873C16.9677 14.4013 17.279 15.1548 17.8672 15.6654C18.5939 16.2967 19.7114 16.5245 21.0989 16.3269C21.1613 16.3178 21.2249 16.3212 21.2859 16.3368C21.3471 16.3524 21.4044 16.3799 21.455 16.4176C21.5055 16.4555 21.548 16.5028 21.5802 16.557C21.6124 16.6112 21.6335 16.6714 21.6426 16.7338C21.6516 16.7963 21.6482 16.8599 21.6327 16.921C21.6171 16.9822 21.5897 17.0396 21.5519 17.0902C21.5141 17.1407 21.4668 17.1833 21.4126 17.2155C21.3585 17.2478 21.2984 17.2689 21.236 17.278C20.8841 17.3289 20.529 17.355 20.1734 17.3562C18.9764 17.3562 17.9796 17.0296 17.2392 16.3955C16.444 15.7038 16.008 14.6717 16.008 13.4886V13.4873Z" fill="#3D454D" stroke="#3D454D" stroke-width="0.2"></path>
+                                            </svg>
+                                    #elseif($deviceIcon == "yubikey")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M8 15C8.55 15 9 15.45 9 16C9 16.55 8.55 17 8 17C7.45 17 7 16.55 7 16C7 15.45 7.45 15 8 15M15.07 4.69L16.5 6.1L15.07 7.5L13.66 6.1L15.07 4.69M17.9 7.5L19.31 8.93L17.9 10.34L16.5 8.93L17.9 7.5M8 13C6.34 13 5 14.34 5 16C5 17.66 6.34 19 8 19C9.66 19 11 17.66 11 16C11 14.34 9.66 13 8 13M9.77 4.33L10.5 5.08L14.29 1.29C14.47 1.11 14.72 1 15 1C15.28 1 15.53 1.11 15.71 1.29L22.78 8.36L22.78 8.37C22.92 8.54 23 8.76 23 9C23 9.3 22.87 9.57 22.66 9.76L22.66 9.76L18.93 13.5L19.67 14.23L12.95 20.95C11.68 22.22 9.93 23 8 23C4.13 23 1 19.87 1 16C1 14.07 1.78 12.32 3.05 11.05L9.77 4.33M20.59 9L15 3.41L11.93 6.5L17.5 12.08L20.59 9Z" style="fill: rgb(61, 69, 77);"></path>
+                                        </svg>
+                                    #elseif($deviceIcon == "pingid_desktop")
+                                        <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
+                                            <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" style="fill: rgb(61, 69, 77);"></path>
+                                        </svg>
+                                    #end
+                                    </div>
+
+                                    #if($deviceIcon == "security_key" ||  $deviceIcon == "fido2")
+                                    <div id="security_key_content_container_id"  class="tile-button__content-container">
+                                    #elseif($deviceIcon == "platform")
+                                    <div id="platform_content_container_id" class="tile-button__content-container">
+                                    #else
+                                    <div class="tile-button__content-container">
+                                    #end
+
+                                        <div class="flex-row flex-row--align-stretch flex-row--justify-start flex-row--flex-direction-column flex-row--column-spacing-sm"
+                                             data-id="flex-row">
+                                            #if ($deviceMessageKey == "mobile" || $deviceMessageKey == "pingid_mobile")
+                                                <div class="tile-button__title">$escape.escape($devicePairingMethod.applicationName)</div>
+                                            #else
+                                                <div class="tile-button__title">
+                                                    $languagePackMessages.getMessage($deviceMessageKeyPrefix, "method", $devicePairingMethod.displayNameKey)
+                                                </div>
+                                            #end
+                                            <div class="tile-button__content">
+                                                    $languagePackMessages.getMessage($deviceMessageKeyPrefix, "message", $devicePairingMethod.displayNameKey)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                #end
+                            </div>
+                        </div>
+                        <div class="text-block" data-id="textblock">
+                            <div class="text-block--overflow-wrap">
+                                <div class="stack" data-id="stack">
+                                    <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                       onclick="cancelDevicePairing()">$languagePackMessages.getMessage($messageKeyPrefix,
+                                        "cancel.button.title")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">
+                    $templateMessages.getMessage("global.footerMessage")
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="form" method="post" action="$resumePath" autocomplete="off">
+        <input type="hidden" name="$escape.escape($selectDevicePairingMethod)" value=""/>
+        <input type="hidden" name="$escape.escape($cancelDevicePairing)" value=""/>
+    </form>
+</div>
+<script type="text/javascript">
+
+    window.IsWebAuthnSupported = function IsWebAuthnSupported()
+	{
+		if (!window.PublicKeyCredential)
+		{
+			console.log("Web Authentication API is not supported on this browser.");
+			return false;
+		}
+		return true;
+	}
+
+    function isWebAuthnSupported () {
+	  if (!window.PublicKeyCredential) {
+		return false;
+	  }
+	  return true;
+	};
+
+
+	window.isWebAuthnPlatformAuthenticatorAvailable = function isWebAuthnPlatformAuthenticatorAvailable() {
+		var timer;
+		var p1 = new Promise(function(resolve) {
+			timer = setTimeout(function() {
+				resolve(false);
+			}, 1000);
+		});
+		var p2 = new Promise(function(resolve) {
+			if (IsWebAuthnSupported() && window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+				resolve(
+					window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function(err) {
+						console.log(err);
+						return false;
+					}));
+			}
+			else {
+				resolve(false);
+			}
+		});
+		return Promise.race([p1, p2]).then(function (res) {
+			clearTimeout(timer);
+			return res;
+		});
+	}
+
+	window.WebAuthnPlatformAuthentication = function WebAuthnPlatformAuthentication(publicKeyCredentialRequestOptions) {
+		return new Promise(function(resolve, reject) {
+			isWebAuthnPlatformAuthenticatorAvailable().then(function (result) {
+				if (result) {
+					resolve(Authenticate(publicKeyCredentialRequestOptions));
+				}
+				reject(Error("UnSupportedBrowserError"));
+			});
+		});
+	}
+
+    var compatibilityMode = getCompatibilityMode();
+
+    function hidePlatformDevice()
+    {
+        // Hide platform device
+        if (document.querySelector('#platform_block_id') != null) {
+            document.querySelector('#platform_block_id').style.display = 'none';
+        }
+        if (document.querySelector('#platform_content_container_id') != null) {
+            document.querySelector('#platform_content_container_id').style.display = 'none';
+        }
+        if (document.querySelector('#platform_icon_container_id') != null) {
+            document.querySelector('#platform_icon_container_id').style.display = 'none';
+        }
+    }
+
+    function hidePlatformAndSecurityKeyDevices()
+    {
+        // Hide both security key and platform device (this will cover also fido2 device
+        // (which is a consolidation of platform and security key into one device type))
+        hidePlatformDevice()
+        if (document.querySelector('#security_key_block_id') != null) {
+            document.querySelector('#security_key_block_id').style.display = 'none';
+        }
+        if (document.querySelector('#security_key_content_container_id') != null) {
+            document.querySelector('#security_key_content_container_id').style.display = 'none';
+        }
+        if (document.querySelector('#security_key_icon_container_id') != null) {
+            document.querySelector('#security_key_icon_container_id').style.display = 'none';
+        }
+    }
+
+    function getCompatibilityMode()
+    {
+        try
+        {
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
+            {
+                hidePlatformAndSecurityKeyDevices();
+                return 'NONE';
+            }
+
+            return isWebAuthnPlatformAuthenticatorAvailable().then(function (result) {
+                if (result) {
+                    return 'FULL';
+                } else if (isWebAuthnSupported()) {
+                    hidePlatformDevice();
+                    return 'SECURITY_KEY_ONLY';
+                } else {
+                    hidePlatformAndSecurityKeyDevices();
+                    return 'NONE';
+                }})
+                .catch(function () {
+                    if (isWebAuthnSupported()) {
+                        hidePlatformDevice();
+                        return 'SECURITY_KEY_ONLY';
+                    } else {
+                        hidePlatformAndSecurityKeyDevices();
+                        return 'NONE';
+                }});
+        }
+        catch(err)
+        {
+            hidePlatformAndSecurityKeyDevices();
+            return 'NONE';
+        }
+	}
+
+    function selectDevicePairingMethod(deviceType, deviceApplicationName, relyingPartyName, port) {
+        const payload = {
+            deviceType: deviceType || null,
+            applicationName: deviceApplicationName || null,
+            relyingPartyName: relyingPartyName || null,
+            port: port || 9410
+        };
+
+        document.forms[0]['$selectDevicePairingMethod'].value = JSON.stringify(payload);
+        submit('$selectDevicePairingMethod');
+    }
+
+    function cancelDevicePairing() {
+        document.forms[0]['$cancelDevicePairing'].value = 'true';
+        submit('$cancelDevicePairing');
+    }
+
+    function submit(inputName) {
+        // Prevent unused inputs from being submitted
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.name !== inputName) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+</script>
+
+</body>
+</html>
