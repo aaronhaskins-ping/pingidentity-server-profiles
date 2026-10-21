@@ -1,0 +1,2 @@
+echo "removing mfa 3.3 adapter"
+rm /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-3.3.jar
