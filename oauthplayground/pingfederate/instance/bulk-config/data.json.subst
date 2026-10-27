@@ -2862,18 +2862,6 @@
     {
       "resourceType": "/configStore",
       "operationType": "SAVE",
-      "subResource": "org.sourceid.oauth20.domain.ClientManagerXmlFileImpl",
-      "items": [
-        {
-          "id": "MigrationComplete8.4",
-          "type": "STRING",
-          "stringValue": "true"
-        }
-      ]
-    },
-    {
-      "resourceType": "/configStore",
-      "operationType": "SAVE",
       "subResource": "org.sourceid.saml20.domain.LoggingMode",
       "items": [
         {
