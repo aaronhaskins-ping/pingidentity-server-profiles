@@ -336,6 +336,26 @@
       ]
     },
     {
+      "resourceType": "/pingOneConnections",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "id": "tEeRh0TwVw7tNx9zWhq1hQ",
+          "name": "internal_aaronhaskins_1003447561",
+          "active": true,
+          "encryptedCredential": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoiRW1JY1UxOVdueSIsInZlcnNpb24iOiIxMy4xLjMuMCJ9..SvL-akRWAq3HSczyhJx5xw.kLhTwLYKhvjQo5wKzqEX-lM5hT7qu0jjlzh1sLEoq3BpQzZUqzYgGMaK9aFRS-dcWSsEStaDxv39_NZ_7q_BSjn_t1jLT0_R0PPr9HWGuG9pKh9HRzpru_lL-CPlHOKTO-kexhyCOCz19NAvoQMxca1-DylKmXVJLfHW_3mmbvneLFhZ8PnVITqLLrowyGF1s2GCIWC1x59inA5eA1fhDrkt_xrsfrph3ySXZ61NTGJR39z2g_OqEFfjazUuILAZOfJfuS6ZxvJ1oI4GvPxl5EfHE4MEdgDHDeUZfIx2XcHNnIYu5rs8tWfyQ7jHEWd7SheNUEOxU7ZBtNbv8P4Wb9JuWzOinUikDfoaPY_Jp2aDL53bU6RHydIjzE1R8N5LqAIhgxmEEbMPZx99h1-o-C_fkQvxLW8UAEjLK47ADmYlw9hAsupKwfTd17IQfk6Ob3_uPM2riG18Ksasb8v43i5o9JrmOM4dYKmKCvLA9iucKKgTNaOoSt52c2KzCOiiupmYwceWslMLr03J4f677H_wqfZTvPBdQvIQGDYhiViiV6aDb4MMCA8JDNtu4kSVQgchzUzcdbgnWa4k-POuIL4jMiEsD7oFGd9jJGIEmEhOmRpJaM4AHbP35_qKGL3pmQ_F4LzzZs0QTJfhsuV08FwBtOUf6TB9t4nS3ZLOijQbqmOOk6ljKDvZP5pQY0AVRygTtm-zx2974isbzEmwHiKfBVtOCyQG1wcbLQrag6xRcQDkbPd1Lm6mYSKeST73r1joJ56lGhINZmUIEOl1UGZXFXqlrfyrCPYRVFG56kDhjf38lBJcejKZX6mhZJ8I7pXCQ3WTzTl_eKcaEF-k9PgQc3AfM39uonmFj_vBtjslRUDFiRfQwwATfvibp854CfBRIrenYLpTMakn_ahwqLZeBP3KYimf7o1qfb-M2hOXSu2TOYmuqxiKSMJMb-uEzRSycw2Eb82Q-BuAQ7TEH0Pr17KliNUW98_BxbYRo63eupny3Uk8HM2wEbMykj1vKUTjgLP5xvsosnuqzZQRaQX9YghXYErJnkis6Kzral80_LZsifzmRC_tnlatUSSr5NBqg5JjPYGnE6v4_hXJfyN8gvknTfj_jxatJMB-a7QIIUPRKQQ-JTQMFg98m92ATc1cJYthSeJUfFd0us0YeIbnKyk6tsi9w2fDHFhCTDBPZaQjepmhVbKdvkVpPxa6yWcq611zBXtaQ9Os1rfHLAIdrhkUfkLxfs12lKYu2DnWoZPuDkJJYv6NQh4neD2unbAXRk2zGBDkCXx3YUxvT5ubh4nnxc1Gm_8IcmJupzqSh5mG0aznI9oZbQUYUZGAZoRys6aq02iwQ9egsThfZmoVmYBWXOkAo0vAV3Gid9MWkguaHcHvWNxnqkx6s7UbbrB5WAy0LtfAuaeA78WFpqDdlRLHqbRDX_WuZenHUb0NZh9dXdY3lSpZFY0e7W8_DgjsH87HrhFryNxkJP0RWEYiyepTyOr5XOwLplDYXjGSWUBZVvCuaMBJp5O2ZJsxG7D4zadM2Il3WeIWfX-wbH2b7vfjSnyvtd8LzBhN3nZzh0E5iIaNGwa_fNxW893_0aAnL8Km964nd2FE_jAiTJ96rvhzYXB-J0y1G9MpJufFtdscQFldBw7ujz3u6Mye.qhQwuSbiujZOmwVWOdTXqQ",
+          "creationDate": "2026-10-26T17:24:49.786Z",
+          "credentialId": "12f95bd5-e925-4be6-84b9-3f698cd456d3",
+          "pingOneConnectionId": "91df2ba2-38bb-49ef-8b7d-2812bbf2ebf3",
+          "environmentId": "f6c2921b-ccae-4cf3-8d2c-603c24f1da40",
+          "organizationName": "internal_aaronhaskins_1003447561",
+          "region": "Europe",
+          "pingOneManagementApiEndpoint": "https://api.pingone.eu",
+          "pingOneAuthenticationApiEndpoint": "https://auth.pingone.eu"
+        }
+      ]
+    },
+        {
       "resourceType": "/dataStores",
       "operationType": "SAVE",
       "items": [
@@ -488,6 +508,162 @@
             "id": ""
           },
           "synchronizationFrequency": 60
+        }
+      ]
+    },
+    {
+      "resourceType": "/serverSettings/wsTrustStsSettings",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "basicAuthnEnabled": false,
+          "clientCertAuthnEnabled": false,
+          "restrictBySubjectDn": false,
+          "restrictByIssuerCert": false,
+          "subjectDns": [],
+          "users": [],
+          "issuerCerts": []
+        }
+      ]
+    },
+    {
+      "resourceType": "/serverSettings/generalSettings",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "disableAutomaticConnectionValidation": false,
+          "disableAutomaticPluginValidation": false,
+          "idpConnectionTransactionLoggingOverride": "DONT_OVERRIDE",
+          "spConnectionTransactionLoggingOverride": "DONT_OVERRIDE",
+          "datastoreValidationIntervalSecs": 300,
+          "requestHeaderForCorrelationId": ""
+        }
+      ]
+    },
+    {
+      "resourceType": "/serverSettings/logSettings",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "logCategories": [
+            {
+              "id": "core",
+              "name": "Core",
+              "description": "Debug logging for core components.",
+              "enabled": true
+            },
+            {
+              "id": "protocolrequestresponse",
+              "name": "Protocol Requests and Responses",
+              "description": "Log protocol request and response messages.",
+              "enabled": true
+            },
+            {
+              "id": "policytree",
+              "name": "Policy Tree",
+              "description": "Policy tree debug logging.",
+              "enabled": true
+            },
+            {
+              "id": "dsresponsetime",
+              "name": "Data Store Response Times",
+              "description": "Log response times for data store requests.",
+              "enabled": false
+            },
+            {
+              "id": "trustedcas",
+              "name": "Trusted CAs",
+              "description": "Log PingFederate and JRE trusted CAs when they are loaded.",
+              "enabled": false
+            },
+            {
+              "id": "xmlsig",
+              "name": "XML Signatures",
+              "description": "Debug logging for XML signature operations.",
+              "enabled": false
+            },
+            {
+              "id": "requestheaders",
+              "name": "HTTP Request Headers",
+              "description": "Log HTTP request headers. Sensitive information, such as passwords, may be logged when this category is enabled.",
+              "enabled": false
+            },
+            {
+              "id": "requestparams",
+              "name": "HTTP Request Parameters",
+              "description": "Log HTTP GET request parameters. Sensitive information, such as passwords, may be logged when this category is enabled.",
+              "enabled": false
+            },
+            {
+              "id": "restdatastore",
+              "name": "REST Data Store Requests and Responses",
+              "description": "Log REST datastore requests and responses. Sensitive information, such as passwords, may be logged when this category is enabled.",
+              "enabled": false
+            },
+            {
+              "id": "provisioning",
+              "name": "Provisioning Operations",
+              "description": "Debug logging for user and group provisioning operations, including detailed information about provisioning requests, responses, and processing steps.",
+              "enabled": false
+            }
+          ],
+          "modificationDate": "2026-10-27T12:25:41.89Z",
+          "replicationStatus": "REPLICATED"
+        }
+      ]
+    },
+    {
+      "resourceType": "/serverSettings/tags",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "id": "_pf_system_tag_ai_agent",
+          "name": "AI Agent",
+          "description": "A client registered as an AI Agent",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.69Z"
+        },
+        {
+          "id": "_pf_system_tag_cimd",
+          "name": "CIMD",
+          "description": "A client identified using a URL, no preregistration necessary",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.693Z"
+        },
+        {
+          "id": "_pf_system_tag_customer",
+          "name": "Customer",
+          "description": "A CIAM application used by customers",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.696Z"
+        },
+        {
+          "id": "_pf_system_tag_dcr",
+          "name": "DCR",
+          "description": "Dynamically registered clients",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.7Z"
+        },
+        {
+          "id": "_pf_system_tag_mcp_server",
+          "name": "MCP Server",
+          "description": "A client registered as an MCP Server",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.702Z"
+        },
+        {
+          "id": "_pf_system_tag_partner",
+          "name": "Partner",
+          "description": "An application used by partners",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.706Z"
+        },
+        {
+          "id": "_pf_system_tag_workforce",
+          "name": "Workforce",
+          "description": "An application used by the workforce",
+          "createdAt": "2025-01-01T00:00:00Z",
+          "updatedAt": "2026-10-26T17:24:49.709Z"
         }
       ]
     },
@@ -2989,6 +3165,53 @@
       ]
     },
     {
+      "resourceType": "/authenticationSelectors",
+      "operationType": "SAVE",
+      "items": [
+        {
+          "id": "HTTPRequestParamSelector",
+          "name": "HTTPRequestParamSelector",
+          "pluginDescriptorRef": {
+            "id": "com.pingidentity.pf.selectors.http.HttpRequestParamAuthnSelector",
+            "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}/pf-admin-api/v1/authenticationSelectors/descriptors/com.pingidentity.pf.selectors.http.HttpRequestParamAuthnSelector"
+          },
+          "configuration": {
+            "tables": [],
+            "fields": [
+              {
+                "name": "HTTP Request Parameter Name",
+                "value": "mfa"
+              },
+              {
+                "name": "Case-Sensitive Matching",
+                "value": "false"
+              },
+              {
+                "name": "Enable 'Any' Result Value",
+                "value": "false"
+              },
+              {
+                "name": "Enable 'No Match' Result Value",
+                "value": "true"
+              },
+              {
+                "name": "Enable 'Not in Request' Result Value",
+                "value": "true"
+              }
+            ]
+          },
+          "lastModified": "2026-10-27T12:25:09.46Z",
+          "attributeContract": {
+            "extendedAttributes": [
+              {
+                "name": "true"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "resourceType": "/authenticationApi/settings",
       "operationType": "SAVE",
       "items": [
@@ -3335,162 +3558,6 @@
       ]
     },
     {
-      "resourceType": "/serverSettings/wsTrustStsSettings",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "basicAuthnEnabled": false,
-          "clientCertAuthnEnabled": false,
-          "restrictBySubjectDn": false,
-          "restrictByIssuerCert": false,
-          "subjectDns": [],
-          "users": [],
-          "issuerCerts": []
-        }
-      ]
-    },
-    {
-      "resourceType": "/serverSettings/generalSettings",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "disableAutomaticConnectionValidation": false,
-          "disableAutomaticPluginValidation": false,
-          "idpConnectionTransactionLoggingOverride": "DONT_OVERRIDE",
-          "spConnectionTransactionLoggingOverride": "DONT_OVERRIDE",
-          "datastoreValidationIntervalSecs": 300,
-          "requestHeaderForCorrelationId": ""
-        }
-      ]
-    },
-    {
-      "resourceType": "/serverSettings/logSettings",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "logCategories": [
-            {
-              "id": "core",
-              "name": "Core",
-              "description": "Debug logging for core components.",
-              "enabled": true
-            },
-            {
-              "id": "protocolrequestresponse",
-              "name": "Protocol Requests and Responses",
-              "description": "Log protocol request and response messages.",
-              "enabled": true
-            },
-            {
-              "id": "policytree",
-              "name": "Policy Tree",
-              "description": "Policy tree debug logging.",
-              "enabled": true
-            },
-            {
-              "id": "dsresponsetime",
-              "name": "Data Store Response Times",
-              "description": "Log response times for data store requests.",
-              "enabled": false
-            },
-            {
-              "id": "trustedcas",
-              "name": "Trusted CAs",
-              "description": "Log PingFederate and JRE trusted CAs when they are loaded.",
-              "enabled": false
-            },
-            {
-              "id": "xmlsig",
-              "name": "XML Signatures",
-              "description": "Debug logging for XML signature operations.",
-              "enabled": false
-            },
-            {
-              "id": "requestheaders",
-              "name": "HTTP Request Headers",
-              "description": "Log HTTP request headers. Sensitive information, such as passwords, may be logged when this category is enabled.",
-              "enabled": false
-            },
-            {
-              "id": "requestparams",
-              "name": "HTTP Request Parameters",
-              "description": "Log HTTP GET request parameters. Sensitive information, such as passwords, may be logged when this category is enabled.",
-              "enabled": false
-            },
-            {
-              "id": "restdatastore",
-              "name": "REST Data Store Requests and Responses",
-              "description": "Log REST datastore requests and responses. Sensitive information, such as passwords, may be logged when this category is enabled.",
-              "enabled": false
-            },
-            {
-              "id": "provisioning",
-              "name": "Provisioning Operations",
-              "description": "Debug logging for user and group provisioning operations, including detailed information about provisioning requests, responses, and processing steps.",
-              "enabled": false
-            }
-          ],
-          "modificationDate": "2026-10-27T12:25:41.89Z",
-          "replicationStatus": "REPLICATED"
-        }
-      ]
-    },
-    {
-      "resourceType": "/serverSettings/tags",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "id": "_pf_system_tag_ai_agent",
-          "name": "AI Agent",
-          "description": "A client registered as an AI Agent",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.69Z"
-        },
-        {
-          "id": "_pf_system_tag_cimd",
-          "name": "CIMD",
-          "description": "A client identified using a URL, no preregistration necessary",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.693Z"
-        },
-        {
-          "id": "_pf_system_tag_customer",
-          "name": "Customer",
-          "description": "A CIAM application used by customers",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.696Z"
-        },
-        {
-          "id": "_pf_system_tag_dcr",
-          "name": "DCR",
-          "description": "Dynamically registered clients",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.7Z"
-        },
-        {
-          "id": "_pf_system_tag_mcp_server",
-          "name": "MCP Server",
-          "description": "A client registered as an MCP Server",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.702Z"
-        },
-        {
-          "id": "_pf_system_tag_partner",
-          "name": "Partner",
-          "description": "An application used by partners",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.706Z"
-        },
-        {
-          "id": "_pf_system_tag_workforce",
-          "name": "Workforce",
-          "description": "An application used by the workforce",
-          "createdAt": "2025-01-01T00:00:00Z",
-          "updatedAt": "2026-10-26T17:24:49.709Z"
-        }
-      ]
-    },
-    {
       "resourceType": "/cluster/settings",
       "operationType": "SAVE",
       "items": [
@@ -3563,26 +3630,6 @@
       ]
     },
     {
-      "resourceType": "/pingOneConnections",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "id": "tEeRh0TwVw7tNx9zWhq1hQ",
-          "name": "internal_aaronhaskins_1003447561",
-          "active": true,
-          "encryptedCredential": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoiRW1JY1UxOVdueSIsInZlcnNpb24iOiIxMy4xLjMuMCJ9..SvL-akRWAq3HSczyhJx5xw.kLhTwLYKhvjQo5wKzqEX-lM5hT7qu0jjlzh1sLEoq3BpQzZUqzYgGMaK9aFRS-dcWSsEStaDxv39_NZ_7q_BSjn_t1jLT0_R0PPr9HWGuG9pKh9HRzpru_lL-CPlHOKTO-kexhyCOCz19NAvoQMxca1-DylKmXVJLfHW_3mmbvneLFhZ8PnVITqLLrowyGF1s2GCIWC1x59inA5eA1fhDrkt_xrsfrph3ySXZ61NTGJR39z2g_OqEFfjazUuILAZOfJfuS6ZxvJ1oI4GvPxl5EfHE4MEdgDHDeUZfIx2XcHNnIYu5rs8tWfyQ7jHEWd7SheNUEOxU7ZBtNbv8P4Wb9JuWzOinUikDfoaPY_Jp2aDL53bU6RHydIjzE1R8N5LqAIhgxmEEbMPZx99h1-o-C_fkQvxLW8UAEjLK47ADmYlw9hAsupKwfTd17IQfk6Ob3_uPM2riG18Ksasb8v43i5o9JrmOM4dYKmKCvLA9iucKKgTNaOoSt52c2KzCOiiupmYwceWslMLr03J4f677H_wqfZTvPBdQvIQGDYhiViiV6aDb4MMCA8JDNtu4kSVQgchzUzcdbgnWa4k-POuIL4jMiEsD7oFGd9jJGIEmEhOmRpJaM4AHbP35_qKGL3pmQ_F4LzzZs0QTJfhsuV08FwBtOUf6TB9t4nS3ZLOijQbqmOOk6ljKDvZP5pQY0AVRygTtm-zx2974isbzEmwHiKfBVtOCyQG1wcbLQrag6xRcQDkbPd1Lm6mYSKeST73r1joJ56lGhINZmUIEOl1UGZXFXqlrfyrCPYRVFG56kDhjf38lBJcejKZX6mhZJ8I7pXCQ3WTzTl_eKcaEF-k9PgQc3AfM39uonmFj_vBtjslRUDFiRfQwwATfvibp854CfBRIrenYLpTMakn_ahwqLZeBP3KYimf7o1qfb-M2hOXSu2TOYmuqxiKSMJMb-uEzRSycw2Eb82Q-BuAQ7TEH0Pr17KliNUW98_BxbYRo63eupny3Uk8HM2wEbMykj1vKUTjgLP5xvsosnuqzZQRaQX9YghXYErJnkis6Kzral80_LZsifzmRC_tnlatUSSr5NBqg5JjPYGnE6v4_hXJfyN8gvknTfj_jxatJMB-a7QIIUPRKQQ-JTQMFg98m92ATc1cJYthSeJUfFd0us0YeIbnKyk6tsi9w2fDHFhCTDBPZaQjepmhVbKdvkVpPxa6yWcq611zBXtaQ9Os1rfHLAIdrhkUfkLxfs12lKYu2DnWoZPuDkJJYv6NQh4neD2unbAXRk2zGBDkCXx3YUxvT5ubh4nnxc1Gm_8IcmJupzqSh5mG0aznI9oZbQUYUZGAZoRys6aq02iwQ9egsThfZmoVmYBWXOkAo0vAV3Gid9MWkguaHcHvWNxnqkx6s7UbbrB5WAy0LtfAuaeA78WFpqDdlRLHqbRDX_WuZenHUb0NZh9dXdY3lSpZFY0e7W8_DgjsH87HrhFryNxkJP0RWEYiyepTyOr5XOwLplDYXjGSWUBZVvCuaMBJp5O2ZJsxG7D4zadM2Il3WeIWfX-wbH2b7vfjSnyvtd8LzBhN3nZzh0E5iIaNGwa_fNxW893_0aAnL8Km964nd2FE_jAiTJ96rvhzYXB-J0y1G9MpJufFtdscQFldBw7ujz3u6Mye.qhQwuSbiujZOmwVWOdTXqQ",
-          "creationDate": "2026-10-26T17:24:49.786Z",
-          "credentialId": "12f95bd5-e925-4be6-84b9-3f698cd456d3",
-          "pingOneConnectionId": "91df2ba2-38bb-49ef-8b7d-2812bbf2ebf3",
-          "environmentId": "f6c2921b-ccae-4cf3-8d2c-603c24f1da40",
-          "organizationName": "internal_aaronhaskins_1003447561",
-          "region": "Europe",
-          "pingOneManagementApiEndpoint": "https://api.pingone.eu",
-          "pingOneAuthenticationApiEndpoint": "https://auth.pingone.eu"
-        }
-      ]
-    },
-    {
       "resourceType": "/configStore",
       "operationType": "SAVE",
       "subResource": "org.sourceid.oauth20.domain.ClientManagerXmlFileImpl",
@@ -3591,53 +3638,6 @@
           "id": "MigrationComplete8.4",
           "type": "STRING",
           "stringValue": "true"
-        }
-      ]
-    },
-    {
-      "resourceType": "/authenticationSelectors",
-      "operationType": "SAVE",
-      "items": [
-        {
-          "id": "HTTPRequestParamSelector",
-          "name": "HTTPRequestParamSelector",
-          "pluginDescriptorRef": {
-            "id": "com.pingidentity.pf.selectors.http.HttpRequestParamAuthnSelector",
-            "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}/pf-admin-api/v1/authenticationSelectors/descriptors/com.pingidentity.pf.selectors.http.HttpRequestParamAuthnSelector"
-          },
-          "configuration": {
-            "tables": [],
-            "fields": [
-              {
-                "name": "HTTP Request Parameter Name",
-                "value": "mfa"
-              },
-              {
-                "name": "Case-Sensitive Matching",
-                "value": "false"
-              },
-              {
-                "name": "Enable 'Any' Result Value",
-                "value": "false"
-              },
-              {
-                "name": "Enable 'No Match' Result Value",
-                "value": "true"
-              },
-              {
-                "name": "Enable 'Not in Request' Result Value",
-                "value": "true"
-              }
-            ]
-          },
-          "lastModified": "2026-10-27T12:25:09.46Z",
-          "attributeContract": {
-            "extendedAttributes": [
-              {
-                "name": "true"
-              }
-            ]
-          }
         }
       ]
     }
