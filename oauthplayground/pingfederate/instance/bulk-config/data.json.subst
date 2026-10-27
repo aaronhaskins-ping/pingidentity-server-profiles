@@ -448,8 +448,8 @@
             "enableIdpDiscovery": true
           },
           "federationInfo": {
-            "baseUrl": "https://${PF_ENGINE_PRIVATE_HOSTNAME}:${PF_ENGINE_PRIVATE_PORT_HTTPS}",
-            "saml2EntityId": "https://${PF_ENGINE_PRIVATE_HOSTNAME}:${PF_ENGINE_PRIVATE_PORT_HTTPS}",
+            "baseUrl": "https://${PF_ENGINE_BASE_URL}",
+            "saml2EntityId": "https://${PF_ENGINE_BASE_URL}",
             "saml1xIssuerId": "localhost:default:entityId",
             "saml1xSourceId": "",
             "wsfedRealm": ""
