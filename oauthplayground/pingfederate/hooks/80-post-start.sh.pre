@@ -4,4 +4,7 @@ rm /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-3.3.jar
 echo "removing pingid 2.18 adapter"
 rm /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.18.0.jar
 
+echo "removing dv 1.3 adapter"
+rm /opt/out/instance/server/default/deploy/pf-pingone-davinci-adapter-1.3.jar
+
 exit 0
